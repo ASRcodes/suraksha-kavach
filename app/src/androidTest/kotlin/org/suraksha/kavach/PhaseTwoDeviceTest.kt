@@ -2,13 +2,10 @@ package org.suraksha.kavach
 
 import android.app.NotificationManager
 import android.graphics.Bitmap
-import android.view.WindowManager
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
-import androidx.test.runner.lifecycle.Stage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
@@ -31,6 +28,8 @@ class PhaseTwoDeviceTest {
         withTimeout(60_000) { while (app.modelState.value == LoadState.LOADING || app.storageState.value == LoadState.LOADING) delay(100) }
         assertEquals(LoadState.READY, app.modelState.value)
         assertEquals(LoadState.READY, app.storageState.value)
+        app.settings.finishSetup()
+        compose.onNodeWithText(compose.activity.getString(R.string.home)).performClick()
         app.setDemo(false)
         app.alerts.cancel()
     }
@@ -87,7 +86,7 @@ class PhaseTwoDeviceTest {
         }
         compose.onNodeWithText(compose.activity.getString(R.string.alert_title)).assertIsDisplayed()
         capture("phase2-danger")
-        compose.onNodeWithText(compose.activity.getString(R.string.understand)).performScrollTo().performClick()
+        compose.onNodeWithText(compose.activity.getString(R.string.understand)).performClick()
     }
 
     @Test fun oldActivityIsPrunedWithoutSavingMessageContent() = runBlocking {
@@ -103,15 +102,10 @@ class PhaseTwoDeviceTest {
 
     private fun capture(name: String) {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
-        instrumentation.runOnMainSync {
-            ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(Stage.RESUMED).forEach {
-                it.window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
-            }
-        }
+        compose.waitForIdle()
         instrumentation.waitForIdleSync()
-        instrumentation.uiAutomation.takeScreenshot()?.let { bitmap ->
-            File(app.cacheDir, "$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
-            bitmap.recycle()
-        }
+        val bitmap = requireNotNull(instrumentation.uiAutomation.takeScreenshot())
+        File(app.cacheDir, "$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+        bitmap.recycle()
     }
 }

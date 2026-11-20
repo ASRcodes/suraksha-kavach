@@ -1,6 +1,6 @@
 # Phone checks, by phase
 
-Use harmless URL strings. Do not open a suspicious URL. Simulate never sends a message.
+Use harmless URL strings. Do not open a suspicious URL. Simulate never opens a link. Dummy TEST alerts never send SMS; real samples can send the opted-in guardian warning.
 
 ## Phase 0
 1. Install the debug APK and open Suraksha Kavach. Demo mode starts off.
@@ -34,3 +34,14 @@ Keep demo mode off for normal use; the Phase 0 app does not provide real protect
 8. Choose a retention period. Clear all data after reviewing the confirmation: the app closes and starts fresh on the next launch.
 
 Guardian SMS and spoken warnings are added in Phase 3. Full-screen background behavior depends on Android permission and lock state; tap the urgent notification if Android shows it instead of an activity.
+
+## Phase 3 phone checks
+1. Complete the four-step setup. Deny each optional permission once and confirm the status stays truthful. Grant notification access and warnings for the notification demo.
+2. Select Hindi, then Punjabi. Tap Hear a sample; review volume, pronunciation and the wording with a fluent speaker. Repeat in airplane mode. Silent/DND should suppress automatic audio.
+3. Save a consenting family contact. SMS starts off until explicitly enabled; accept SMS permission only if wanted. Test the Call my guardian button: it opens the dialer, without placing a call automatically.
+4. With normal cellular service and a default SMS SIM selected, run a real held-out dangerous sample. Confirm red warning, local voice and one generic guardian SMS without message text/domain. Check the SMS status.
+5. Repeat within 30 minutes, then restart the app and repeat. No further SMS should be requested. A TEST alert in explicit demo mode must never send SMS.
+6. Check red warnings while unlocked, locked, and while another app is visible. If Android restricts full-screen notifications, enable the optional overlay while unlocked or tap the urgent notification. Dismiss and replay must work.
+7. Revoke SMS or overlay permission in Android settings. Return to setup and verify status updates and local scanning still works.
+
+Airplane mode validates local detection/audio/history, not carrier delivery. SMS can fail or remain queued without cellular service. Emulator tests use a fake SMS transport; physical carrier delivery remains a phone check.

@@ -43,6 +43,15 @@ fun HomeScreen(graph: KavachApplication, permissions: PermissionStatus, history:
     Button(onClick = { navigate(Page.CHECK) }, modifier = Modifier.fillMaxWidth().heightIn(min = 68.dp)) {
         Text(stringResource(R.string.check_a_message))
     }
+    OutlinedCard(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp)) {
+        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Text(stringResource(R.string.family_title), style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(R.string.family_home_detail), style = MaterialTheme.typography.bodyMedium)
+            OutlinedButton(onClick = { navigate(Page.GUARDIAN) }, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)) {
+                Text(stringResource(R.string.family_setup))
+            }
+        }
+    }
     if (storage == LoadState.FAILED) Text(stringResource(R.string.history_unavailable), color = MaterialTheme.colorScheme.error)
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         Text(stringResource(R.string.recent_activity), style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
@@ -50,18 +59,6 @@ fun HomeScreen(graph: KavachApplication, permissions: PermissionStatus, history:
     }
     if (history.isEmpty()) EmptyHistory() else history.take(3).forEach { ActivityCard(it, openAlert) }
     Text(stringResource(R.string.privacy_note), style = MaterialTheme.typography.bodyMedium)
-}
-
-@Composable
-fun SetupScreen(status: PermissionStatus, onNotifications: () -> Unit, onListener: () -> Unit,
-                onFullScreen: () -> Unit, onDone: () -> Unit) {
-    Text(stringResource(R.string.setup_steps), style = MaterialTheme.typography.headlineMedium)
-    Text(stringResource(R.string.setup_detail))
-    PermissionCard(stringResource(R.string.notification_access), status.listener && status.connected,
-        stringResource(if (status.listener && !status.connected) R.string.listener_reconnect else R.string.notification_access_detail), onListener)
-    PermissionCard(stringResource(R.string.allow_alerts), status.notifications, stringResource(R.string.alerts_detail), onNotifications)
-    PermissionCard(stringResource(R.string.full_screen), status.fullScreen, stringResource(R.string.full_screen_detail), onFullScreen)
-    Button(onClick = onDone, modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp)) { Text(stringResource(R.string.done_setup)) }
 }
 
 @Composable

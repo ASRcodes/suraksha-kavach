@@ -26,3 +26,9 @@ https://publicsuffix.org/list/ and https://mozilla.org/MPL/2.0/
 All library versions, source URLs and dataset limitations are declared in README.md.
 
 Phase 2: AndroidX Room 2.8.5 and KSP 2.2.20-2.0.4 (Apache 2.0); SQLCipher for Android 4.10.0 (SQLCipher community BSD-style license). See https://github.com/sqlcipher/sqlcipher-android and the bundled native library notices.
+
+Phase 3: AndroidX SavedState 1.3.3 (Apache-2.0).
+Bundled warning WAV files are generated from our static scripts with eSpeak NG 1.52.0.
+eSpeak NG is GPL-3.0; the generator executable/data are build-only and not bundled.
+Source: https://github.com/espeak-ng/espeak-ng/releases/tag/1.52.0
+Generation scripts, source checksum and audio hashes: tools/ and docs/validation/.

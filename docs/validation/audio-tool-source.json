@@ -1,0 +1,7 @@
+{
+  "tool": "eSpeak NG",
+  "version": "1.52.0",
+  "url": "https://github.com/espeak-ng/espeak-ng/releases/download/1.52.0/espeak-ng.msi",
+  "sha256": "7f673c709ea5dd579d3b5ebb98688cc575328a6ab7438d2bc405b88cedaeafb9",
+  "purpose": "Build-time generation of bundled warning WAVs; no engine shipped in app"
+}

@@ -22,7 +22,7 @@ class PhaseZeroSmokeTest {
         }
         compose.onNodeWithText(compose.activity.getString(R.string.alert_title)).assertIsDisplayed()
         compose.onNodeWithText("example.org").assertIsDisplayed()
-        compose.onNodeWithText(compose.activity.getString(R.string.understand)).performScrollTo().performClick()
+        compose.onNodeWithText(compose.activity.getString(R.string.understand)).performClick()
         compose.activity.runOnUiThread { (compose.activity.application as KavachApplication).setDemo(false) }
     }
 }

@@ -112,3 +112,33 @@ The ordinary scanner never performs a network lookup. Auto-deletion runs on scan
 and through an Android-scheduled background job; system battery restrictions can delay jobs.
 
 Device and build evidence for this phase is added to docs/PHASES.md when checks finish.
+
+## Phase 3 guardian and audio
+
+Guardian SMS is an explicit opt-in. The number is encrypted with Android Keystore, and
+only a generic warning is sent, at most once per 30 minutes. Attempts are saved before
+sending, so a restart or a clock rollback does not reset the limit. Test-only dummy
+verdicts never send SMS. Real held-out samples use the normal pipeline and may request
+SMS when the user has opted in. Carrier service and a default SMS SIM are required;
+Android reports submission, not proof that the guardian read the message. Detection,
+history, and bundled audio work without internet.
+
+Hindi, Punjabi, and English WAV warnings are generated locally with
+[eSpeak NG 1.52.0](https://github.com/espeak-ng/espeak-ng/releases/tag/1.52.0),
+a GPL-3.0 build tool; its engine is not shipped in the APK. Scripts, source checksum,
+and WAV measurements are in tools/ and docs/validation/. Android MediaPlayer plays
+these static warnings; Android TextToSpeech is a fallback using an installed offline
+voice only. Silent mode, Do Not Disturb and notification volume are respected. Native
+speakers should review pronunciation on the test phone. No message content enters TTS.
+
+An optional SYSTEM_ALERT_WINDOW permission enables a dismissible warning over other
+apps when the phone is unlocked. It does not inspect other apps or intercept their
+taps. Lock-screen warnings use NotificationCompat full-screen intents when Android
+permits them. Setup shows notification access, notification permission, full-screen
+access, overlay access, battery exemption, and optional SMS permission separately.
+
+Additional declared library: AndroidX SavedState 1.3.3 (Apache 2.0). Native APIs added:
+SmsManager, PendingIntent, ACTION_DIAL, AudioManager, MediaPlayer, AudioAttributes,
+TextToSpeech, WindowManager TYPE_APPLICATION_OVERLAY, KeyguardManager and PowerManager.
+Android test builds replace SMS delivery with an in-memory fake; no automated test
+can send carrier SMS. Only this instrumentation subclass permits screenshots.

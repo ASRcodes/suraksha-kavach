@@ -13,7 +13,7 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "0.1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "org.suraksha.kavach.KavachTestRunner"
     }
     bundle { language { enableSplit = false } }
     buildFeatures { compose = true; buildConfig = true }
@@ -33,6 +33,7 @@ android {
 kotlin { jvmToolchain(17) }
 ksp { arg("room.schemaLocation", "$projectDir/schemas") }
 dependencies {
+    implementation(libs.androidx.savedstate)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     implementation(libs.sqlcipher)

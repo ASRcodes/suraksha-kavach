@@ -3,6 +3,9 @@ package org.suraksha.kavach
 import android.Manifest
 import android.app.NotificationManager
 import android.content.Intent
+import android.os.PowerManager
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -33,24 +36,30 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
+import kotlinx.coroutines.launch
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.suraksha.kavach.ui.*
 
-enum class Page { HOME, ACTIVITY, SETTINGS, CHECK, SETUP, DEBUG }
-data class PermissionStatus(val notifications: Boolean, val listener: Boolean, val connected: Boolean, val fullScreen: Boolean)
+enum class Page { HOME, ACTIVITY, SETTINGS, CHECK, SETUP, DEBUG, GUARDIAN }
+data class PermissionStatus(val notifications: Boolean, val listener: Boolean, val connected: Boolean, val fullScreen: Boolean,
+    val overlay: Boolean, val battery: Boolean, val sms: Boolean)
 
 class MainActivity : LocalizedActivity() {
+    private var requestedPage by mutableStateOf<Page?>(null)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         val graph = application as KavachApplication
+        if (graph.secureWindows) window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+        requestedPage = routedPage(intent)
+        val initialPage = requestedPage ?: if (graph.settings.state.value.setupComplete) Page.HOME else Page.SETUP
         setContent {
             KavachTheme {
-                var page by rememberSaveable { mutableStateOf(Page.HOME) }
+                var page by rememberSaveable { mutableStateOf(initialPage) }
+                LaunchedEffect(requestedPage) { requestedPage?.let { page = it; requestedPage = null } }
                 var revision by remember { mutableIntStateOf(0) }
                 val connected by graph.listenerConnected.collectAsStateWithLifecycle()
                 val history by graph.history.collectAsStateWithLifecycle()
@@ -61,12 +70,17 @@ class MainActivity : LocalizedActivity() {
                     lifecycle.addObserver(observer)
                     onDispose { lifecycle.removeObserver(observer) }
                 }
-                val allowed = remember(revision, connected) {
+                val allowed = remember(revision, connected, state.overlayEnabled) {
                     PermissionStatus(NotificationManagerCompat.from(this).areNotificationsEnabled(),
                         packageName in NotificationManagerCompat.getEnabledListenerPackages(this), connected,
-                        Build.VERSION.SDK_INT < 34 || getSystemService(NotificationManager::class.java).canUseFullScreenIntent())
+                        Build.VERSION.SDK_INT < 34 || getSystemService(NotificationManager::class.java).canUseFullScreenIntent(),
+                        state.overlayEnabled && Settings.canDrawOverlays(this),
+                        getSystemService(PowerManager::class.java).isIgnoringBatteryOptimizations(packageName),
+                        ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED)
                 }
                 val permission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { revision++ }
+                val smsPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { revision++; graph.scope.launch(kotlinx.coroutines.Dispatchers.IO) { graph.guardian.refresh() } }
+                val requestSms = { smsPermission.launch(Manifest.permission.SEND_SMS) }
                 val requestAlerts = {
                     if (Build.VERSION.SDK_INT >= 33 && !allowed.notifications)
                         permission.launch(Manifest.permission.POST_NOTIFICATIONS)
@@ -103,13 +117,22 @@ class MainActivity : LocalizedActivity() {
                                 Page.CHECK -> ScanScreen(graph, false) { startActivity(AlertActivity.intent(this@MainActivity, it)) }
                                 Page.DEBUG -> ScanScreen(graph, true) { startActivity(AlertActivity.intent(this@MainActivity, it)) }
                                 Page.SETTINGS -> SettingsScreen(graph, state, onLanguage = { graph.settings.setLanguage(it); recreate() },
-                                    onSetup = { page = Page.SETUP }, onDebug = { page = Page.DEBUG })
-                                Page.SETUP -> SetupScreen(allowed, requestAlerts,
+                                    onSetup = { page = Page.SETUP }, onDebug = { page = Page.DEBUG }, onGuardian = { page = Page.GUARDIAN },
+                                    overlayAllowed = allowed.overlay, onOverlay = { enableOverlay(false) })
+                                Page.GUARDIAN -> GuardianScreen(graph, allowed.sms, requestSms)
+                                Page.SETUP -> SetupScreen(allowed, state.language, if (state.setupComplete) 1 else 0,
+                                    onLanguage = { graph.settings.setLanguage(it); recreate() }, onNotifications = requestAlerts,
                                     onListener = { openSettings(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)) },
                                     onFullScreen = {
                                         if (Build.VERSION.SDK_INT >= 34) openSettings(Intent(Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT, "package:$packageName".toUri()))
                                         else openSettings(Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, packageName))
                                     },
+                                    onOverlay = { enableOverlay(true) },
+                                    onBattery = {
+                                        openSettings(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
+                                    },
+                                    onGuardian = { graph.settings.finishSetup(); page = Page.GUARDIAN },
+                                    onVoice = graph::speakWarning,
                                     onDone = { graph.settings.finishSetup(); page = Page.HOME })
                                 else -> Unit
                             }
@@ -120,6 +143,13 @@ class MainActivity : LocalizedActivity() {
         }
     }
 
+    private fun enableOverlay(review: Boolean) {
+        (application as KavachApplication).settings.setOverlay(true)
+        if (review || !Settings.canDrawOverlays(this))
+            openSettings(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, "package:$packageName".toUri()))
+    }
+    private fun routedPage(intent: Intent): Page? = runCatching { Page.valueOf(intent.getStringExtra("page").orEmpty()) }.getOrNull()
+    override fun onNewIntent(intent: Intent) { super.onNewIntent(intent); setIntent(intent); requestedPage = routedPage(intent) }
     private fun openSettings(intent: Intent) {
         runCatching { startActivity(intent) }.onFailure { runCatching { startActivity(Intent(Settings.ACTION_SETTINGS)) } }
     }

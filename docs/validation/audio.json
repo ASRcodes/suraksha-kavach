@@ -1,0 +1,28 @@
+{
+  "generator": "eSpeak NG 1.52.0 (build time only)",
+  "voice_variant": "f3",
+  "words_per_minute": 140,
+  "clips": {
+    "en": {
+      "seconds": 8.021360544217687,
+      "rms": 0.12148001800842258,
+      "peak": 0.9989013671875,
+      "sha256": "08ac7ba94e71df5ab40ca177e9cbbd2744f17283c78675bb24030871a403a684",
+      "script": "Stop. This could be a scam. Do not share your O T P, PIN, or money. Call someone you trust."
+    },
+    "hi": {
+      "seconds": 8.477732426303854,
+      "rms": 0.14861624350420535,
+      "peak": 0.975128173828125,
+      "sha256": "c149371ae9b512e4d3a7faaae0370023080cd17efac2e6000e49fcbd727ca61b",
+      "script": "सावधान। धोखा हो सकता है। ओ टी पी, पिन या पैसे मत दें। अपने परिवार से बात करें।"
+    },
+    "pa": {
+      "seconds": 8.628571428571428,
+      "rms": 0.15110167813026257,
+      "peak": 0.98114013671875,
+      "sha256": "fffb4bcac05085dab136062744070275d1d9ca165beca7e08006e01c4312745f",
+      "script": "ਸਾਵਧਾਨ। ਧੋਖਾ ਹੋ ਸਕਦਾ ਹੈ। ਓ ਟੀ ਪੀ, ਪਿੰਨ ਜਾਂ ਪੈਸੇ ਨਾ ਦਿਓ। ਆਪਣੇ ਪਰਿਵਾਰ ਨਾਲ ਗੱਲ ਕਰੋ।"
+    }
+  }
+}

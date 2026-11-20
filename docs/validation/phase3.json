@@ -1,0 +1,18 @@
+{
+  "phase": 3,
+  "build": "passed",
+  "core_tests": 24,
+  "core_failures": 0,
+  "lint_errors": 0,
+  "lint_warnings": 0,
+  "android_api": 26,
+  "physical_device": false,
+  "instrumentation_tests": 7,
+  "failures": 0,
+  "seconds": 23.207,
+  "airplane_mode": true,
+  "network": "Active default network: none",
+  "guardian_sms": "in-memory fake only; carrier delivery pending phone",
+  "audio": "three bundled WAVs decoded by Android; audible/native-language review pending phone",
+  "debug_apk_sha256": "328ebc7070dc518b0101e3588be7aa00c0be52870e8944cf9001f6e3c4271149"
+}

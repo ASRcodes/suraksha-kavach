@@ -1,6 +1,16 @@
 package org.suraksha.kavach
 
 import android.app.Application
+import android.app.Activity
+import android.os.Bundle
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
+import java.lang.ref.WeakReference
+import org.suraksha.kavach.audio.WarningAudio
+import org.suraksha.kavach.family.*
+import org.suraksha.kavach.notifications.WarningOverlay
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.sync.Mutex
@@ -13,7 +23,13 @@ enum class LoadState { LOADING, READY, FAILED }
 enum class RefreshState { IDLE, WORKING, DONE, FAILED }
 data class MessageOutcome(val results: List<ScanResult> = emptyList(), val available: Boolean = true)
 
-class KavachApplication : Application() {
+open class KavachApplication : Application() {
+    open val secureWindows: Boolean = true
+    protected open fun createSmsSender(): SmsSender = AndroidSmsSender(this)
+    private var foreground: WeakReference<Activity>? = null
+    lateinit var guardian: GuardianManager; private set
+    lateinit var audio: WarningAudio; private set
+    lateinit var overlays: WarningOverlay; private set
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     val demoEnabled = MutableStateFlow(false)
     val listenerConnected = MutableStateFlow(false)
@@ -36,6 +52,22 @@ class KavachApplication : Application() {
         super.onCreate()
         settings = AppSettings(this)
         secrets = SecretStore(this)
+        guardian = GuardianManager(this, secrets, createSmsSender())
+        audio = WarningAudio(this)
+        overlays = WarningOverlay(this)
+        scope.launch(Dispatchers.IO) { guardian.refresh() }
+        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
+            override fun onActivityResumed(activity: Activity) { foreground = WeakReference(activity); scope.launch(Dispatchers.IO) { guardian.refresh() } }
+            override fun onActivityPaused(activity: Activity) {
+                if (foreground?.get() === activity) foreground = null
+                if (activity is MainActivity) audio.stop()
+            }
+            override fun onActivityCreated(activity: Activity, state: Bundle?) = Unit
+            override fun onActivityStarted(activity: Activity) = Unit
+            override fun onActivityStopped(activity: Activity) = Unit
+            override fun onActivitySaveInstanceState(activity: Activity, state: Bundle) = Unit
+            override fun onActivityDestroyed(activity: Activity) = Unit
+        })
         store = ModelStore(this)
         alerts = AlertDispatcher(this)
         alerts.createChannels()
@@ -74,10 +106,48 @@ class KavachApplication : Application() {
         val results = try { withContext(Dispatchers.Default) { selected.scan(text, source, deduplicate = !simulate) } }
             catch (_: Exception) { return MessageOutcome(available = false) }
         results.filter { it.verdict.level != Level.SAFE }.maxByOrNull { it.verdict.level.ordinal }?.let {
-            alerts.post(it, allowFullScreen = !simulate)
+            handleWarning(it, manual = simulate)
         }
         saveResults(results)
         return MessageOutcome(results)
+    }
+
+    private suspend fun handleWarning(result: ScanResult, manual: Boolean) {
+        scope.launch(Dispatchers.IO) { guardian.onDanger(result) }
+        if (manual) {
+            if (result.verdict.level == Level.SUSPICIOUS) alerts.post(result, false)
+            return
+        }
+        withContext(Dispatchers.Main.immediate) {
+            if (result.verdict.level == Level.DANGEROUS) {
+                val activity = foreground?.get()
+                if (activity != null && !activity.isFinishing) activity.startActivity(AlertActivity.intent(activity, result))
+                else {
+                    val overlayVisible = overlays.show(result)
+                    alerts.post(result, allowFullScreen = !overlayVisible)
+                }
+            } else alerts.post(result, false)
+        }
+    }
+
+    fun dismissWarnings() {
+        scope.launch(Dispatchers.Main.immediate) { audio.stop(); overlays.dismiss(); alerts.cancel() }
+    }
+    fun speakWarning() {
+        if (settings.state.value.voiceEnabled) scope.launch(Dispatchers.Main.immediate) { audio.play(settings.state.value.language) }
+    }
+    fun callGuardian(context: Context) {
+        scope.launch(Dispatchers.IO) {
+            val number = runCatching { guardian.number() }.getOrNull()
+            withContext(Dispatchers.Main) {
+                val destination = if (number != null) Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", number, null))
+                    else Intent(context, MainActivity::class.java).putExtra("page", "GUARDIAN")
+                destination.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                runCatching { context.startActivity(destination) }.onFailure {
+                    Toast.makeText(context, AppSettings.localized(context).getString(R.string.dial_unavailable), Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
 
     fun saveResults(results: List<ScanResult>) {

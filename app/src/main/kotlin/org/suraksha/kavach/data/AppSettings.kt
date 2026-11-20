@@ -12,7 +12,9 @@ data class SettingsState(
     val retentionDays: Int = 7,
     val protectionEnabled: Boolean = true,
     val enhanced: Boolean = false,
-    val setupComplete: Boolean = false
+    val setupComplete: Boolean = false,
+    val voiceEnabled: Boolean = true,
+    val overlayEnabled: Boolean = false
 )
 
 class AppSettings(context: Context) {
@@ -25,7 +27,9 @@ class AppSettings(context: Context) {
         retentionDays = prefs.getInt("retention_days", 7).takeIf { it in setOf(1, 7, 30) } ?: 7,
         protectionEnabled = prefs.getBoolean("protection", true),
         enhanced = prefs.getBoolean("enhanced", false),
-        setupComplete = prefs.getBoolean("setup_complete", false)
+        setupComplete = prefs.getBoolean("setup_complete", false),
+        voiceEnabled = prefs.getBoolean("voice", true),
+        overlayEnabled = prefs.getBoolean("overlay", false)
     )
 
     @Synchronized private fun change(block: SharedPreferences.Editor.() -> Unit) {
@@ -36,6 +40,8 @@ class AppSettings(context: Context) {
     fun setRetention(value: Int) { require(value in setOf(1, 7, 30)); change { putInt("retention_days", value) } }
     fun setProtection(value: Boolean) = change { putBoolean("protection", value) }
     fun setEnhanced(value: Boolean) = change { putBoolean("enhanced", value) }
+    fun setVoice(value: Boolean) = change { putBoolean("voice", value) }
+    fun setOverlay(value: Boolean) = change { putBoolean("overlay", value) }
     fun finishSetup() = change { putBoolean("setup_complete", true) }
 
     companion object {

@@ -27,3 +27,12 @@
 - Home screenshot inspected for layout. Red-screen visibility was asserted through Compose UI tests; fuller visual and large-font review continues in Phase 5.
 - Phase 0 and Phase 1 GitHub Actions runs passed on Linux.
 - Physical-phone checks remain pending USB access. See PHONE_TESTS.md.
+
+## Phase 3
+- Core: 24 tests passed. Debug APK, instrumentation APK and lint passed; zero lint issues.
+- API 26 emulator: all 7 tests passed (23.207 s), in airplane mode with no active default network.
+- Guardian tests verify opt-in, permission, dummy-alert exclusion, encrypted number storage, generic message content, persistent rate limiting, and clock rollback. The transport is a fake; no carrier SMS was sent.
+- Android decoded all three bundled warning WAVs. Audible quality and physical carrier delivery remain phone checks.
+- Overlay visibility is checked against rendered screen pixels as well as Compose controls; dismissal passed. The red activity, home and setup layouts were inspected.
+- Direct battery-exemption requests were replaced with Android battery settings plus status, avoiding the restricted request API.
+- Phase 2 GitHub Actions passed: https://github.com/ASRcodes/suraksha-kavach/actions/runs/44816154100
