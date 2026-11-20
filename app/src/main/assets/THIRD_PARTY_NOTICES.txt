@@ -1,0 +1,26 @@
+Suraksha Kavach dataset/model notices
+
+URL model and bundled training-domain blocklist derive from PhiUSIIL by Arvind Prasad
+and Shalini Chandra (2024), UCI 967, CC BY 4.0. Changes: URL-only features,
+registrable-domain partitioning, filtering, model training and domain extraction.
+https://archive.ics.uci.edu/dataset/967/phiusil-phishing-url-dataset
+https://creativecommons.org/licenses/by/4.0/
+
+English text data includes SMS Spam Collection by Tiago Almeida and Jos Hidalgo,
+UCI 228 (2011), CC BY 4.0, DOI 10.24432/C5CC84. Spam is a proxy, not verified fraud.
+
+Synthetic text data: anmolshrivastav/scam_ham_india_14_languages and
+sidzzz07/scamshield-dataset (Synthetic_Tier_C only), publisher-declared MIT.
+Changes: normalization, URL removal from language features, grouping, training,
+and held-out demo composition. Dataset revisions and checksums are in ml/reports.
+
+Tranco: Victor Le Pochat, Tom Van Goethem, Samaneh Tajalizadehkhoob,
+Maciej Korczynski and Wouter Joosen. Used for a reviewed allowlist and benign-domain
+proxy; provider-specific licenses include CC BY 3.0, CC BY-SA 4.0 and CC BY-NC 4.0.
+This release is a noncommercial hackathon/research build. https://tranco-list.eu/
+
+Public Suffix List: Mozilla and contributors, MPL 2.0.
+Original license header is retained in public_suffix_list.dat.
+https://publicsuffix.org/list/ and https://mozilla.org/MPL/2.0/
+
+All library versions, source URLs and dataset limitations are declared in README.md.

@@ -11,8 +11,12 @@ enum class ReasonCode {
 data class Verdict(val level: Level, val score: Double, val reasonCodes: Set<ReasonCode>) {
     init { require(score.isFinite() && score in 0.0..1.0) }
 }
-fun interface UrlScorer { fun evaluate(url: String, message: String): Verdict }
-/** Development-only wiring check. All URLs follow the same rule. */
+fun interface UrlScorer {
+    fun evaluate(url: String, message: String): Verdict
+    fun evaluateBatch(urls: List<String>, message: String): List<Verdict> = urls.map { evaluate(it, message) }
+    fun evaluateText(message: String): Verdict = Verdict(Level.SAFE, 0.0, emptySet())
+}
+/** Debug-only wiring check. All URLs follow the same rule; there are no trigger links. */
 class DemoScorer : UrlScorer {
     override fun evaluate(url: String, message: String) =
         Verdict(Level.DANGEROUS, 1.0, setOf(ReasonCode.DEMO_ONLY))

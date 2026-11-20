@@ -1,0 +1,7 @@
+{
+  "validation_benign_rows": 2000,
+  "heuristic_alerts": 0,
+  "text_alerts_on_url_only": 1136,
+  "correction": "Strip URLs from language features; preserve all original partitions; calibrate again using validation only.",
+  "all_original_split_fingerprints_unchanged": true
+}

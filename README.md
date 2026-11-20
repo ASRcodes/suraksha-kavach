@@ -56,3 +56,39 @@ APK: `app/build/outputs/apk/debug/app-debug.apk`. Phone steps: [docs/PHONE_TESTS
 
 CI uses `actions/checkout@v4`, `actions/setup-java@v4` (Temurin 17),
 `gradle/actions/setup-gradle@v4`, and `actions/upload-artifact@v4`.
+
+## Phase 1 models and evaluation
+
+The portable URL forest and character n-gram text classifier are trained and exported.
+Kotlin/Python parity is tested on 50 held-out pairs. Source archives are kept out of Git;
+the APK bundles JSON models, domain lists and the full Public Suffix List.
+
+- Full URL alert pipeline: 41,112 held-out rows; precision 99.84%, recall 98.92%, F1 99.38%, FPR 0.0915%.
+- Text classifier: 1,284 held-out rows; precision 99.35%, recall 95.05%, F1 97.15%, FPR 0.2081%.
+- These are dataset results, not field accuracy. Indic data is synthetic; Punjabi has only 76 test templates.
+- The language preprocessor strips URLs. A correction and re-evaluation on unchanged partitions is disclosed.
+
+See [the metrics report](ml/reports/METRICS.md), [source checksums](ml/reports/sources_manifest.json),
+[training instructions](ml/README.md), and [split fingerprints](ml/reports/split_manifest.json).
+
+### Additional declared libraries and datasets
+
+| Component | Version / source | Use and license |
+|---|---|---|
+| Python | 3.11 | Training only; PSF |
+| NumPy | 2.2.6 | Feature arrays; BSD-3-Clause |
+| SciPy | 1.15.3 | Sparse TF-IDF matrices; BSD-3-Clause |
+| scikit-learn | 1.7.2 | ExtraTrees and logistic regression; BSD-3-Clause |
+| joblib | 1.6.0 | scikit-learn dependency; BSD-3-Clause |
+| threadpoolctl | 3.8.0 | Native thread control; BSD-3-Clause |
+| cloudpickle | 3.1.3 | joblib dependency; BSD-3-Clause |
+| [PhiUSIIL, UCI 967](https://archive.ics.uci.edu/dataset/967/phiusil-phishing-url-dataset) | Prasad & Chandra, 2024 | URL strings/labels; CC BY 4.0 |
+| [SMS Spam Collection, UCI 228](https://archive.ics.uci.edu/dataset/228/sms+spam+collection) | Almeida & Hidalgo, 2011 | English spam/ham proxy; CC BY 4.0 |
+| [Tranco](https://tranco-list.eu/) | Snapshot/checksum in reports | Popular-domain proxy and reviewed allowlist; provider terms include noncommercial restrictions |
+| [Indian multilingual scam/ham](https://huggingface.co/datasets/anmolshrivastav/scam_ham_india_14_languages) | Pinned revision in ml/README.md | Synthetic messages; publisher-declared MIT |
+| [ScamShield corpus](https://huggingface.co/datasets/sidzzz07/scamshield-dataset) | Pinned revision in ml/README.md | Only Synthetic_Tier_C training rows; publisher-declared MIT |
+| [Public Suffix List](https://publicsuffix.org/list/) | Snapshot/checksum in reports | ICANN and private-domain boundaries; MPL 2.0 |
+
+Dataset archives were downloaded with Python urllib over HTTPS. No links inside a dataset
+were opened. No cloud scoring or inference API is used. OpenPhish and URLhaus parsers exist
+for appropriately licensed local files; those feeds are not part of these shipped models.

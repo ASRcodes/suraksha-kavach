@@ -17,3 +17,8 @@ Use harmless URL strings. Do not open a suspicious URL. Simulate never sends a m
 
 Expected Phase 0 limitation: every URL, including Google or YouTube, triggers a TEST alert
 while demo mode is on. No risk classifier is installed in this phase.
+
+## Phase 1 checkpoint
+The JVM detector is now trained and verified. The app integration arrives in Phase 2.
+For this checkpoint, repeat the Phase 0 notification and Simulate checks in explicit demo mode.
+Keep demo mode off for normal use; the Phase 0 app does not provide real protection.

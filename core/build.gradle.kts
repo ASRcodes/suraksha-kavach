@@ -5,3 +5,7 @@ dependencies {
     testImplementation(libs.junit)
 }
 tasks.test { testLogging { events("failed", "skipped") } }
+
+sourceSets {
+    named("test") { resources.srcDirs("../app/src/main/assets", "../ml/parity") }
+}
