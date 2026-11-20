@@ -24,3 +24,5 @@ Original license header is retained in public_suffix_list.dat.
 https://publicsuffix.org/list/ and https://mozilla.org/MPL/2.0/
 
 All library versions, source URLs and dataset limitations are declared in README.md.
+
+Phase 2: AndroidX Room 2.8.5 and KSP 2.2.20-2.0.4 (Apache 2.0); SQLCipher for Android 4.10.0 (SQLCipher community BSD-style license). See https://github.com/sqlcipher/sqlcipher-android and the bundled native library notices.

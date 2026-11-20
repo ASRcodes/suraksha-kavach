@@ -1,0 +1,21 @@
+{
+  "phase": 2,
+  "generated_utc": "2026-11-20T20:58:33.409748+00:00",
+  "core_unit_tests": 20,
+  "failures": 0,
+  "android_lint": "no issues",
+  "emulator_api": 26,
+  "device_tests": 4,
+  "device_tests_airplane": 4,
+  "airplane_mode": true,
+  "active_default_network": "none",
+  "encrypted_database_verified": true,
+  "history_columns": [
+    "level",
+    "domain",
+    "timestamp",
+    "reasonCodes"
+  ],
+  "physical_phone_verified": false,
+  "debug_apk_sha256": "692764e9e774a76126689f7d6dc82aa423c78d5bba23c4b1b3329fac80ff154b"
+}

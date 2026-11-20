@@ -13,13 +13,16 @@ class PhaseZeroSmokeTest {
 
     @Test fun demoMessageUsesSharedPipelineAndOpensRedAlert() {
         compose.activity.runOnUiThread { (compose.activity.application as KavachApplication).setDemo(true) }
+        compose.onNodeWithText(compose.activity.getString(R.string.settings)).performClick()
         compose.onNodeWithText(compose.activity.getString(R.string.simulate_message)).performScrollTo().performClick()
-        compose.onNode(hasSetTextAction()).performTextInput("A harmless test: example.org")
+        compose.onNodeWithTag("messageInput").performTextInput("A harmless test: example.org")
         compose.onNodeWithText(compose.activity.getString(R.string.check_message)).performClick()
         compose.waitUntil(5_000) {
             compose.onAllNodesWithText(compose.activity.getString(R.string.demo_badge)).fetchSemanticsNodes().isNotEmpty()
         }
         compose.onNodeWithText(compose.activity.getString(R.string.alert_title)).assertIsDisplayed()
         compose.onNodeWithText("example.org").assertIsDisplayed()
+        compose.onNodeWithText(compose.activity.getString(R.string.understand)).performScrollTo().performClick()
+        compose.activity.runOnUiThread { (compose.activity.application as KavachApplication).setDemo(false) }
     }
 }

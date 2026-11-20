@@ -16,3 +16,14 @@
 - All held-out demo pairs pass through the actual core pipeline. No demo-specific classification rules.
 - The app still uses the explicit Phase 0 demo until Phase 2 wires real models.
 - Data provenance, licenses, split fingerprints, limitations, and integration correction are recorded in `/ml`.
+
+## Phase 2
+- `:core:test`: 20 tests, zero failures. App JVM test task has no separate tests; Android integration is covered on the emulator.
+- Debug APK, instrumentation APK, and Android lint: passed; lint reports no issues.
+- Android API 26 emulator: all 4 instrumentation tests passed (15.015 s).
+- Airplane mode ON and active default network NONE: all 4 tests passed again (16.121 s).
+- Verified: Google/YouTube/Wikipedia produce no notification; a real held-out Hinglish sample opens the red screen; explicit demo mode still works; old metadata is deleted.
+- SQLCipher database integrity check passed. The activity table has exactly level/domain/timestamp/reasonCodes; its on-disk header is encrypted and test message text is absent.
+- Home screenshot inspected for layout. Red-screen visibility was asserted through Compose UI tests; fuller visual and large-font review continues in Phase 5.
+- Phase 0 and Phase 1 GitHub Actions runs passed on Linux.
+- Physical-phone checks remain pending USB access. See PHONE_TESTS.md.

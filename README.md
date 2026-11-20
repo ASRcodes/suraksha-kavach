@@ -92,3 +92,23 @@ See [the metrics report](ml/reports/METRICS.md), [source checksums](ml/reports/s
 Dataset archives were downloaded with Python urllib over HTTPS. No links inside a dataset
 were opened. No cloud scoring or inference API is used. OpenPhish and URLhaus parsers exist
 for appropriately licensed local files; those feeds are not part of these shipped models.
+
+## Phase 2 implementation
+
+The app now loads the integrity-checked JSON models locally, distinguishes yellow and red warnings,
+and keeps a bounded activity log in Room backed by SQLCipher. The database passphrase is random
+and wrapped with an Android Keystore AES-GCM key. Failure to open encrypted history never creates
+a plaintext fallback. Message text remains transient.
+
+Additional declared dependencies: AndroidX Room runtime/ktx/compiler 2.8.5 (Apache 2.0),
+KSP 2.2.20-2.0.4 (Apache 2.0), and net.zetetic:sqlcipher-android 4.10.0
+(SQLCipher community BSD-style licensing and bundled native notices). Native APIs added:
+Android Keystore, AES-GCM via javax.crypto, SecureRandom, JobScheduler, AtomicFile,
+HttpURLConnection, and ActivityManager.clearApplicationUserData.
+
+Enhanced mode is off by default. Its explicit refresh button downloads the public repository
+domain list over HTTPS; no URLs, messages, history, files, or query parameters are sent.
+The ordinary scanner never performs a network lookup. Auto-deletion runs on scans/startup
+and through an Android-scheduled background job; system battery restrictions can delay jobs.
+
+Device and build evidence for this phase is added to docs/PHASES.md when checks finish.

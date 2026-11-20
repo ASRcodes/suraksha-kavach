@@ -22,3 +22,15 @@ while demo mode is on. No risk classifier is installed in this phase.
 The JVM detector is now trained and verified. The app integration arrives in Phase 2.
 For this checkpoint, repeat the Phase 0 notification and Simulate checks in explicit demo mode.
 Keep demo mode off for normal use; the Phase 0 app does not provide real protection.
+
+## Phase 2 phone checks
+1. Install the new debug APK. Wait for the local scanner to finish loading.
+2. Home > Check a message: enter a normal Google or YouTube URL. No warning notification should appear.
+3. Settings > Simulate a message: keep Demo mode OFF. Try the Hinglish held-out example. A red warning should show the real domain and plain-language reasons.
+4. Repeat the held-out example with airplane mode enabled. Never open any test URL.
+5. Open Activity: entries contain only result, domain and time. No message text, sender, URL path or query should appear.
+6. Change the language to Hindi and Punjabi. Repeat a warning and check that navigation and reasons change language.
+7. Enhanced mode starts OFF. Turning it ON only enables an explicit list-download button; ordinary scanning remains offline.
+8. Choose a retention period. Clear all data after reviewing the confirmation: the app closes and starts fresh on the next launch.
+
+Guardian SMS and spoken warnings are added in Phase 3. Full-screen background behavior depends on Android permission and lock state; tap the urgent notification if Android shows it instead of an activity.

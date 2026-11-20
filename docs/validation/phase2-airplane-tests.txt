@@ -1,0 +1,66 @@
+INSTRUMENTATION_STATUS: numtests=4
+INSTRUMENTATION_STATUS: stream=
+org.suraksha.kavach.PhaseTwoDeviceTest:
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=oldActivityIsPrunedWithoutSavingMessageContent
+INSTRUMENTATION_STATUS: class=org.suraksha.kavach.PhaseTwoDeviceTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: numtests=4
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=oldActivityIsPrunedWithoutSavingMessageContent
+INSTRUMENTATION_STATUS: class=org.suraksha.kavach.PhaseTwoDeviceTest
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: numtests=4
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=realModelsStaySilentForTrustedLinksAndEncryptOnlyMetadata
+INSTRUMENTATION_STATUS: class=org.suraksha.kavach.PhaseTwoDeviceTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: numtests=4
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=realModelsStaySilentForTrustedLinksAndEncryptOnlyMetadata
+INSTRUMENTATION_STATUS: class=org.suraksha.kavach.PhaseTwoDeviceTest
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: numtests=4
+INSTRUMENTATION_STATUS: stream=
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=heldOutHinglishSampleOpensRealRedWarning
+INSTRUMENTATION_STATUS: class=org.suraksha.kavach.PhaseTwoDeviceTest
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: numtests=4
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=heldOutHinglishSampleOpensRealRedWarning
+INSTRUMENTATION_STATUS: class=org.suraksha.kavach.PhaseTwoDeviceTest
+INSTRUMENTATION_STATUS: current=3
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: numtests=4
+INSTRUMENTATION_STATUS: stream=
+org.suraksha.kavach.PhaseZeroSmokeTest:
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=demoMessageUsesSharedPipelineAndOpensRedAlert
+INSTRUMENTATION_STATUS: class=org.suraksha.kavach.PhaseZeroSmokeTest
+INSTRUMENTATION_STATUS: current=4
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: numtests=4
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: test=demoMessageUsesSharedPipelineAndOpensRedAlert
+INSTRUMENTATION_STATUS: class=org.suraksha.kavach.PhaseZeroSmokeTest
+INSTRUMENTATION_STATUS: current=4
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_RESULT: stream=
+
+Time: 16.121
+
+OK (4 tests)
+
+
+INSTRUMENTATION_CODE: -1
