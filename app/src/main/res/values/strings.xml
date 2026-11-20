@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="app_name">Suraksha Kavach</string>
+  <string name="offline_private">On your phone. For your family.</string>
+  <string name="welcome">A little care.\nA safer day.</string>
+  <string name="setup_title">Let’s get you ready</string>
+  <string name="setup_steps">Your protection, step by step</string>
+  <string name="phase_zero_notice">This is an early test build. Turn on demo mode to try the warning screen.</string>
+  <string name="demo_active">Demo mode is on</string>
+  <string name="demo_mode">Demo mode</string>
+  <string name="demo_mode_detail">Every link triggers a test alert.</string>
+  <string name="demo_badge">TEST ALERT • DEMO ONLY</string>
+  <string name="demo_warning">This is a demo warning. This link has not been classified as a real threat.</string>
+  <string name="alert_title">Do not touch\nthis link</string>
+  <string name="alert_advice">Pause. Do not share an OTP, PIN or money. Ask someone you trust.</string>
+  <string name="understand">I understand</string>
+  <string name="alert_channel">Urgent link warnings</string>
+  <string name="alert_channel_description">Warnings about links that need your attention.</string>
+  <string name="notification_access">1. Read message notifications</string>
+  <string name="notification_access_detail">Check visible SMS and WhatsApp notifications on this phone.</string>
+  <string name="allow_alerts">2. Allow warning notifications</string>
+  <string name="alerts_detail">So a risky link can get your attention.</string>
+  <string name="full_screen">3. Full-screen warnings</string>
+  <string name="full_screen_detail">Android may show a notification instead. Tap it to open the warning.</string>
+  <string name="enabled">Enabled · Review</string>
+  <string name="open_settings">Open settings</string>
+  <string name="simulate_message">Simulate a message</string>
+  <string name="simulation_detail">Paste a test message. It follows the same scanner as a notification, without sending a message.</string>
+  <string name="message_label">Message to check</string>
+  <string name="enable_demo_first">Turn on demo mode on Home first.</string>
+  <string name="check_message">Check this message</string>
+  <string name="no_links">No links found. Nothing was saved.</string>
+  <string name="alert_opened">The test warning was opened.</string>
+  <string name="back_home">Back to Home</string>
+  <string name="privacy_note">Your message text is never saved. This test works without internet.</string>
+</resources>

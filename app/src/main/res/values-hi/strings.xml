@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="app_name">सुरक्षा कवच</string>
+  <string name="offline_private">आपके फ़ोन पर। आपके परिवार के लिए।</string>
+  <string name="welcome">थोड़ी सावधानी।\nसुरक्षित हर दिन।</string>
+  <string name="setup_title">सुरक्षा की तैयारी करें</string>
+  <string name="setup_steps">सुरक्षा की आसान तैयारी</string>
+  <string name="phase_zero_notice">यह शुरुआती परीक्षण ऐप है। चेतावनी देखने के लिए डेमो मोड चालू करें।</string>
+  <string name="demo_active">डेमो मोड चालू है</string>
+  <string name="demo_mode">डेमो मोड</string>
+  <string name="demo_mode_detail">हर लिंक पर परीक्षण चेतावनी आएगी।</string>
+  <string name="demo_badge">परीक्षण चेतावनी • केवल डेमो</string>
+  <string name="demo_warning">यह डेमो चेतावनी है। इस लिंक को असली ख़तरे के रूप में नहीं जाँचा गया है।</string>
+  <string name="alert_title">इस लिंक को\nन छुएँ</string>
+  <string name="alert_advice">रुकें। OTP, PIN या पैसे न दें। किसी भरोसेमंद व्यक्ति से पूछें।</string>
+  <string name="understand">मैं समझ गया/गई</string>
+  <string name="alert_channel">ज़रूरी लिंक चेतावनियाँ</string>
+  <string name="alert_channel_description">ध्यान देने योग्य लिंक की चेतावनियाँ।</string>
+  <string name="notification_access">1. संदेश की सूचनाएँ पढ़ें</string>
+  <string name="notification_access_detail">इस फ़ोन की SMS और WhatsApp सूचनाएँ जाँचें।</string>
+  <string name="allow_alerts">2. चेतावनियों की अनुमति दें</string>
+  <string name="alerts_detail">ताकि ख़तरनाक लिंक पर आपको चेतावनी मिले।</string>
+  <string name="full_screen">3. पूरी स्क्रीन पर चेतावनी</string>
+  <string name="full_screen_detail">Android इसकी जगह सूचना दिखा सकता है। चेतावनी खोलने के लिए उसे छुएँ।</string>
+  <string name="enabled">चालू है · देखें</string>
+  <string name="open_settings">सेटिंग्स खोलें</string>
+  <string name="simulate_message">संदेश का परीक्षण करें</string>
+  <string name="simulation_detail">परीक्षण संदेश डालें। कोई संदेश भेजे बिना, वही जाँच चलेगी जो सूचनाओं पर चलती है।</string>
+  <string name="message_label">जाँच के लिए संदेश</string>
+  <string name="enable_demo_first">पहले होम पर डेमो मोड चालू करें।</string>
+  <string name="check_message">संदेश जाँचें</string>
+  <string name="no_links">कोई लिंक नहीं मिला। कुछ सहेजा नहीं गया।</string>
+  <string name="alert_opened">परीक्षण चेतावनी खुल गई।</string>
+  <string name="back_home">होम पर लौटें</string>
+  <string name="privacy_note">आपके संदेश का टेक्स्ट कभी सहेजा नहीं जाता। यह परीक्षण बिना इंटरनेट चलता है।</string>
+</resources>

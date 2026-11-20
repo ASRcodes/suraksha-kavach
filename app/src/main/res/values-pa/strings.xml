@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="app_name">ਸੁਰੱਖਿਆ ਕਵਚ</string>
+  <string name="offline_private">ਤੁਹਾਡੇ ਫ਼ੋਨ ਉੱਤੇ। ਤੁਹਾਡੇ ਪਰਿਵਾਰ ਲਈ।</string>
+  <string name="welcome">ਥੋੜ੍ਹੀ ਸਾਵਧਾਨੀ।\nਹਰ ਦਿਨ ਸੁਰੱਖਿਅਤ।</string>
+  <string name="setup_title">ਆਓ ਤਿਆਰੀ ਕਰੀਏ</string>
+  <string name="setup_steps">ਸੁਰੱਖਿਆ ਲਈ ਆਸਾਨ ਕਦਮ</string>
+  <string name="phase_zero_notice">ਇਹ ਮੁੱਢਲਾ ਟੈਸਟ ਐਪ ਹੈ। ਚੇਤਾਵਨੀ ਦੇਖਣ ਲਈ ਡੈਮੋ ਮੋਡ ਚਾਲੂ ਕਰੋ।</string>
+  <string name="demo_active">ਡੈਮੋ ਮੋਡ ਚਾਲੂ ਹੈ</string>
+  <string name="demo_mode">ਡੈਮੋ ਮੋਡ</string>
+  <string name="demo_mode_detail">ਹਰ ਲਿੰਕ ਉੱਤੇ ਟੈਸਟ ਚੇਤਾਵਨੀ ਆਵੇਗੀ।</string>
+  <string name="demo_badge">ਟੈਸਟ ਚੇਤਾਵਨੀ • ਸਿਰਫ਼ ਡੈਮੋ</string>
+  <string name="demo_warning">ਇਹ ਡੈਮੋ ਚੇਤਾਵਨੀ ਹੈ। ਇਸ ਲਿੰਕ ਨੂੰ ਅਸਲੀ ਖ਼ਤਰੇ ਵਜੋਂ ਨਹੀਂ ਜਾਂਚਿਆ ਗਿਆ।</string>
+  <string name="alert_title">ਇਸ ਲਿੰਕ ਨੂੰ\nਨਾ ਛੂਹੋ</string>
+  <string name="alert_advice">ਰੁਕੋ। OTP, PIN ਜਾਂ ਪੈਸੇ ਨਾ ਦਿਓ। ਕਿਸੇ ਭਰੋਸੇਯੋਗ ਵਿਅਕਤੀ ਨੂੰ ਪੁੱਛੋ।</string>
+  <string name="understand">ਮੈਂ ਸਮਝ ਗਿਆ/ਗਈ</string>
+  <string name="alert_channel">ਜ਼ਰੂਰੀ ਲਿੰਕ ਚੇਤਾਵਨੀਆਂ</string>
+  <string name="alert_channel_description">ਧਿਆਨ ਦੇਣ ਯੋਗ ਲਿੰਕਾਂ ਦੀਆਂ ਚੇਤਾਵਨੀਆਂ।</string>
+  <string name="notification_access">1. ਸੁਨੇਹਿਆਂ ਦੀਆਂ ਸੂਚਨਾਵਾਂ ਪੜ੍ਹੋ</string>
+  <string name="notification_access_detail">ਇਸ ਫ਼ੋਨ ਦੀਆਂ SMS ਅਤੇ WhatsApp ਸੂਚਨਾਵਾਂ ਜਾਂਚੋ।</string>
+  <string name="allow_alerts">2. ਚੇਤਾਵਨੀਆਂ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ</string>
+  <string name="alerts_detail">ਤਾਂ ਜੋ ਖ਼ਤਰਨਾਕ ਲਿੰਕ ਲਈ ਤੁਹਾਨੂੰ ਚੇਤਾਵਨੀ ਮਿਲੇ।</string>
+  <string name="full_screen">3. ਪੂਰੀ ਸਕ੍ਰੀਨ ਉੱਤੇ ਚੇਤਾਵਨੀ</string>
+  <string name="full_screen_detail">Android ਇਸ ਦੀ ਥਾਂ ਸੂਚਨਾ ਦਿਖਾ ਸਕਦਾ ਹੈ। ਚੇਤਾਵਨੀ ਖੋਲ੍ਹਣ ਲਈ ਉਸ ਨੂੰ ਛੂਹੋ।</string>
+  <string name="enabled">ਚਾਲੂ ਹੈ · ਵੇਖੋ</string>
+  <string name="open_settings">ਸੈਟਿੰਗਾਂ ਖੋਲ੍ਹੋ</string>
+  <string name="simulate_message">ਸੁਨੇਹੇ ਦੀ ਜਾਂਚ ਕਰੋ</string>
+  <string name="simulation_detail">ਟੈਸਟ ਸੁਨੇਹਾ ਪਾਓ। ਸੁਨੇਹਾ ਭੇਜੇ ਬਿਨਾਂ, ਸੂਚਨਾਵਾਂ ਵਾਲੀ ਹੀ ਜਾਂਚ ਹੋਵੇਗੀ।</string>
+  <string name="message_label">ਜਾਂਚ ਲਈ ਸੁਨੇਹਾ</string>
+  <string name="enable_demo_first">ਪਹਿਲਾਂ ਹੋਮ ਉੱਤੇ ਡੈਮੋ ਮੋਡ ਚਾਲੂ ਕਰੋ।</string>
+  <string name="check_message">ਸੁਨੇਹਾ ਜਾਂਚੋ</string>
+  <string name="no_links">ਕੋਈ ਲਿੰਕ ਨਹੀਂ ਮਿਲਿਆ। ਕੁਝ ਸੰਭਾਲਿਆ ਨਹੀਂ ਗਿਆ।</string>
+  <string name="alert_opened">ਟੈਸਟ ਚੇਤਾਵਨੀ ਖੁੱਲ੍ਹ ਗਈ।</string>
+  <string name="back_home">ਹੋਮ ਉੱਤੇ ਵਾਪਸ</string>
+  <string name="privacy_note">ਤੁਹਾਡੇ ਸੁਨੇਹੇ ਦਾ ਟੈਕਸਟ ਕਦੇ ਸੰਭਾਲਿਆ ਨਹੀਂ ਜਾਂਦਾ। ਇਹ ਟੈਸਟ ਬਿਨਾਂ ਇੰਟਰਨੈੱਟ ਚੱਲਦਾ ਹੈ।</string>
+</resources>
