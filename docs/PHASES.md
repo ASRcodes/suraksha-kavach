@@ -36,3 +36,12 @@
 - Overlay visibility is checked against rendered screen pixels as well as Compose controls; dismissal passed. The red activity, home and setup layouts were inspected.
 - Direct battery-exemption requests were replaced with Android battery settings plus status, avoiding the restricted request API.
 - Phase 2 GitHub Actions passed: https://github.com/ASRcodes/suraksha-kavach/actions/runs/44816154100
+
+## Phase 4
+- Core: 30 tests passed. Debug APK, instrumentation APK and lint passed; no lint issues.
+- API 26 emulator: all 10 tests passed (47.488 s), airplane mode on with no default network.
+- EICAR is detected from its SHA-256 even with an APK filename; normal text passes; a renamed ZIP/APK is flagged from native requested-permission metadata; malformed APKs receive caution.
+- Share-to-scan opens the red file warning; temporary scan archives are deleted and history excludes the private test filename.
+- The code-word setup/check UI and salted-hash storage passed. Correct answers continue to recommend hanging up and calling a saved number.
+- The dummy fixture contains only AndroidManifest.xml and an empty resources.arsc table, with hasCode=false and no components. It was inspected, never installed or executed.
+- The optional folder watcher needs a phone SAF-provider/battery check; it is explicitly bounded and best effort.

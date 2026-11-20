@@ -10,6 +10,7 @@ import android.widget.Toast
 import java.lang.ref.WeakReference
 import org.suraksha.kavach.audio.WarningAudio
 import org.suraksha.kavach.family.*
+import org.suraksha.kavach.files.*
 import org.suraksha.kavach.notifications.WarningOverlay
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +28,9 @@ open class KavachApplication : Application() {
     open val secureWindows: Boolean = true
     protected open fun createSmsSender(): SmsSender = AndroidSmsSender(this)
     private var foreground: WeakReference<Activity>? = null
+    lateinit var files: FileScanner; private set
+    lateinit var watcher: FolderWatcher; private set
+    lateinit var familyCode: FamilyCode; private set
     lateinit var guardian: GuardianManager; private set
     lateinit var audio: WarningAudio; private set
     lateinit var overlays: WarningOverlay; private set
@@ -52,6 +56,10 @@ open class KavachApplication : Application() {
         super.onCreate()
         settings = AppSettings(this)
         secrets = SecretStore(this)
+        files = FileScanner(this)
+        familyCode = FamilyCode(secrets)
+        watcher = FolderWatcher(this)
+        scope.launch(Dispatchers.IO) { watcher.refresh() }
         guardian = GuardianManager(this, secrets, createSmsSender())
         audio = WarningAudio(this)
         overlays = WarningOverlay(this)
@@ -110,6 +118,15 @@ open class KavachApplication : Application() {
         }
         saveResults(results)
         return MessageOutcome(results)
+    }
+
+    suspend fun processFile(uri: Uri, manual: Boolean = true): ScanResult {
+        val result = files.scan(uri)
+        if (manual || settings.state.value.protectionEnabled) {
+            if (result.verdict.level != Level.SAFE) handleWarning(result, manual)
+            saveResults(listOf(result))
+        }
+        return result
     }
 
     private suspend fun handleWarning(result: ScanResult, manual: Boolean) {

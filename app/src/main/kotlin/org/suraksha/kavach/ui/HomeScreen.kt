@@ -40,9 +40,12 @@ fun HomeScreen(graph: KavachApplication, permissions: PermissionStatus, history:
                 Button(onClick = { navigate(Page.SETUP) }) { Text(stringResource(R.string.finish_setup)) }
         }
     }
+    OutlinedButton(onClick = { navigate(Page.CALL) }, modifier = Modifier.fillMaxWidth().heightIn(min = 68.dp),
+        colors = ButtonDefaults.outlinedButtonColors(contentColor = Danger)) { Text(stringResource(R.string.call_button)) }
     Button(onClick = { navigate(Page.CHECK) }, modifier = Modifier.fillMaxWidth().heightIn(min = 68.dp)) {
         Text(stringResource(R.string.check_a_message))
     }
+    OutlinedButton(onClick = { navigate(Page.FILES) }, modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp)) { Text(stringResource(R.string.check_file)) }
     OutlinedCard(Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp)) {
         Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text(stringResource(R.string.family_title), style = MaterialTheme.typography.titleLarge)

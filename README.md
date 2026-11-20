@@ -142,3 +142,43 @@ SmsManager, PendingIntent, ACTION_DIAL, AudioManager, MediaPlayer, AudioAttribut
 TextToSpeech, WindowManager TYPE_APPLICATION_OVERLAY, KeyguardManager and PowerManager.
 Android test builds replace SMS delivery with an in-memory fake; no automated test
 can send carrier SMS. Only this instrumentation subclass permits screenshots.
+
+## Phase 4 files and family code word
+
+Use Home > Check a file, or share a file from Android Files to Kavach. File checks
+stream SHA-256 locally and inspect APK metadata with PackageManager.getPackageArchiveInfo.
+They never install or execute an APK. Scans are limited to 100 MB. ZIP/APK input is
+briefly copied to private cache for metadata inspection and removed afterward; leftovers
+are removed before the next inspection. Names, bytes and hashes are not put in history.
+A renamed APK is still recognized by its archive/manifest. Permission combinations involving
+SMS, overlays, accessibility, app installation and device admin raise warnings; common
+APK scam names are an additional warning sign. These are risk heuristics, not proof of malware.
+
+The starter signature list contains **only the harmless 68-byte EICAR test signature**.
+It is not a comprehensive malware database. Other files can still be dangerous even when
+no known sign is found. ZIP contents and executable code are not analyzed. EICAR has a
+distinct test explanation and never sends a guardian SMS. The official source is
+https://www.eicar.org/download-anti-malware-testfile/. Automated tests generate its bytes
+in memory and do not execute them. No real malware is used.
+
+The optional folder watcher uses a user-granted Storage Access Framework folder and
+JobScheduler, roughly every 15 minutes when Android permits. Android 11+ does not allow
+granting the Downloads root, so select a small subfolder. It checks new direct children,
+up to 20 per run in folders with at most 1,000 entries; there is no recursion. Providers
+without modification dates require manual scans. Scheduling, simultaneous changes and
+provider timestamps make this a best-effort convenience, not an immediate download blocker.
+The folder URI is encrypted; only timing/counter preferences are kept for progress.
+
+The family code uses PBKDF2-HMAC-SHA256 (210,000 iterations, a random 128-bit salt, a
+256-bit result), wrapped by Android Keystore encryption. Only the versioned salted hash
+is stored. The suspicious-call screen always advises hanging up and calling a saved
+number, including when a code matches. No calls are recorded and no voice-clone detector
+is claimed; Tier 3 is still excluded.
+
+Additional declared native/JDK APIs: ContentResolver, DocumentsContract and OpenableColumns
+(Storage Access Framework), getPackageArchiveInfo, MessageDigest SHA-256, ZipFile,
+SecretKeyFactory/PBEKeySpec and MessageDigest.isEqual. AndroidX FileProvider is used only
+in the debug test fixture route. No additional third-party runtime libraries or cloud APIs
+were added. The no-code unsigned dummy APK is built with Android SDK aapt2 36.1.0 from
+tools/fixtures/AndroidManifest.xml; it contains only manifest/resources and is never installed.
+Rebuild it with python tools/build_dummy_apk.py.

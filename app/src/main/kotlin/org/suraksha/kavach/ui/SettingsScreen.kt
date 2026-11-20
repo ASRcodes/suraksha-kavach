@@ -22,7 +22,7 @@ import org.suraksha.kavach.data.SettingsState
 
 @Composable
 fun SettingsScreen(graph: KavachApplication, settings: SettingsState, onLanguage: (String) -> Unit,
-                   onSetup: () -> Unit, onDebug: () -> Unit, onGuardian: () -> Unit, overlayAllowed: Boolean, onOverlay: () -> Unit) {
+                   onSetup: () -> Unit, onDebug: () -> Unit, onGuardian: () -> Unit, onCode: () -> Unit, overlayAllowed: Boolean, onOverlay: () -> Unit) {
     var confirmClear by remember { mutableStateOf(false) }
     var clearFailed by remember { mutableStateOf(false) }
     val refresh by graph.refreshState.collectAsStateWithLifecycle()
@@ -43,6 +43,7 @@ fun SettingsScreen(graph: KavachApplication, settings: SettingsState, onLanguage
         { graph.settings.setVoice(it); if (!it) graph.audio.stop() })
     OutlinedButton(onClick = { graph.speakWarning() }, modifier = Modifier.fillMaxWidth().heightIn(min = 60.dp)) { Text(stringResource(R.string.hear_sample)) }
     OutlinedButton(onClick = onGuardian, modifier = Modifier.fillMaxWidth().heightIn(min = 60.dp)) { Text(stringResource(R.string.family_setup)) }
+    OutlinedButton(onClick = onCode, modifier = Modifier.fillMaxWidth().heightIn(min = 60.dp)) { Text(stringResource(R.string.family_code_title)) }
     SettingToggle(stringResource(R.string.overlay_title), stringResource(R.string.overlay_detail), overlayAllowed,
         { if (it) onOverlay() else { graph.settings.setOverlay(false); graph.overlays.dismiss() } })
     Text(stringResource(R.string.auto_delete), style = MaterialTheme.typography.titleLarge)

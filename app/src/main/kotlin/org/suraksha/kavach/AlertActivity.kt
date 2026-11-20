@@ -71,7 +71,7 @@ class AlertActivity : LocalizedActivity() {
         enableEdgeToEdge(style, style)
     }
     private fun speakIfNeeded() {
-        if (result.verdict.level == Level.DANGEROUS && intent.getBooleanExtra("speak", true)) graph.speakWarning()
+        if (result.verdict.level == Level.DANGEROUS && ReasonCode.EICAR_TEST !in result.verdict.reasonCodes && intent.getBooleanExtra("speak", true)) graph.speakWarning()
     }
     private fun dismiss() { graph.dismissWarnings(); finish() }
     override fun onStop() { graph.audio.stop(); super.onStop() }
@@ -89,20 +89,20 @@ fun WarningScreen(result: ScanResult, language: String, onUnderstand: () -> Unit
     Column(Modifier.fillMaxSize().background(background).safeDrawingPadding()) {
         Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(26.dp),
             verticalArrangement = Arrangement.spacedBy(22.dp)) {
-            Text(stringResource(if (ReasonCode.DEMO_ONLY in result.verdict.reasonCodes) R.string.demo_badge
+            Text(stringResource(if (ReasonCode.EICAR_TEST in result.verdict.reasonCodes) R.string.file_test_badge
+                else if (ReasonCode.DEMO_ONLY in result.verdict.reasonCodes) R.string.demo_badge
                 else if (danger) R.string.danger_badge else R.string.caution_badge),
                 color = foreground, fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
-            Text(stringResource(if (danger && result.domain.isEmpty()) R.string.alert_message_title
-                else if (danger) R.string.alert_title else R.string.caution_title),
+            Text(stringResource(warningTitle(result)),
                 color = foreground, fontSize = 40.sp, lineHeight = 49.sp, fontWeight = FontWeight.Bold)
             if (result.domain.isNotBlank()) Text(result.domain, color = foreground, style = MaterialTheme.typography.titleLarge)
             HorizontalDivider(color = foreground.copy(alpha = 0.4f))
-            result.verdict.reasonCodes.take(4).forEach {
+            result.verdict.reasonCodes.filter { it != ReasonCode.FILE_SCAN }.take(4).forEach {
                 Text(ReasonMessages.get(it, language), color = foreground, style = MaterialTheme.typography.bodyLarge)
             }
-            Text(stringResource(R.string.alert_advice), color = foreground, style = MaterialTheme.typography.bodyLarge)
+            Text(stringResource(if (ReasonCode.FILE_SCAN in result.verdict.reasonCodes) R.string.file_advice else R.string.alert_advice), color = foreground, style = MaterialTheme.typography.bodyLarge)
             guardianStatus?.let { Text(it, color = foreground, style = MaterialTheme.typography.bodyMedium) }
-            onReplay?.let {
+            onReplay?.takeIf { ReasonCode.EICAR_TEST !in result.verdict.reasonCodes }?.let {
                 OutlinedButton(onClick = it, modifier = Modifier.fillMaxWidth().heightIn(min = 58.dp),
                     border = BorderStroke(1.dp, foreground), colors = ButtonDefaults.outlinedButtonColors(contentColor = foreground)) {
                     Text(stringResource(R.string.replay_warning))
@@ -124,4 +124,12 @@ fun WarningScreen(result: ScanResult, language: String, onUnderstand: () -> Unit
             }
         }
     }
+}
+
+fun warningTitle(result: ScanResult): Int = when {
+    ReasonCode.EICAR_TEST in result.verdict.reasonCodes -> R.string.eicar_title
+    result.verdict.level != Level.DANGEROUS -> R.string.caution_title
+    ReasonCode.FILE_SCAN in result.verdict.reasonCodes -> R.string.file_danger_title
+    result.domain.isEmpty() -> R.string.alert_message_title
+    else -> R.string.alert_title
 }

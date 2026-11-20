@@ -15,6 +15,7 @@ import org.suraksha.core.*
 import org.suraksha.kavach.KavachApplication
 import org.suraksha.kavach.audio.WarningAudio
 import org.suraksha.kavach.AlertActivity
+import org.suraksha.kavach.warningTitle
 import org.suraksha.kavach.R
 import org.suraksha.kavach.data.AppSettings
 
@@ -33,7 +34,7 @@ class AlertDispatcher(private val context: Context) {
         for (language in listOf("en", "hi", "pa")) {
             val label = when (language) { "hi" -> "Hindi"; "pa" -> "Punjabi"; else -> "English" }
             manager.createNotificationChannel(NotificationChannel(dangerChannel(language),
-                localized.getString(R.string.alert_channel) + " · " + label, NotificationManager.IMPORTANCE_HIGH).apply {
+                localized.getString(R.string.alert_channel) + " Â· " + label, NotificationManager.IMPORTANCE_HIGH).apply {
                 description = localized.getString(R.string.alert_channel_description)
                 enableVibration(true)
                 setSound(WarningAudio.uri(context, language), WarningAudio.attributes())
@@ -55,8 +56,8 @@ class AlertDispatcher(private val context: Context) {
         val channel = if (danger) dangerChannel(language) else CAUTION_CHANNEL
         val pending = PendingIntent.getActivity(context, id, AlertActivity.intent(context, result, speak = false),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        val title = localized.getString(if (danger && result.domain.isEmpty()) R.string.alert_message_title else if (danger) R.string.alert_title else R.string.caution_title)
-        val reason = result.verdict.reasonCodes.firstOrNull()?.let { ReasonMessages.get(it, language) }
+        val title = localized.getString(warningTitle(result))
+        val reason = result.verdict.reasonCodes.firstOrNull { it != ReasonCode.FILE_SCAN }?.let { ReasonMessages.get(it, language) }
             ?: localized.getString(R.string.alert_advice)
         val public = NotificationCompat.Builder(context, channel).setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(localized.getString(R.string.app_name))
@@ -73,7 +74,7 @@ class AlertDispatcher(private val context: Context) {
             .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
             .setPublicVersion(public)
             .setAutoCancel(true).setOnlyAlertOnce(true)
-            .setSilent(!(context.applicationContext as KavachApplication).settings.state.value.voiceEnabled)
+            .setSilent(ReasonCode.EICAR_TEST in result.verdict.reasonCodes || !(context.applicationContext as KavachApplication).settings.state.value.voiceEnabled)
         if (danger && allowFullScreen && (Build.VERSION.SDK_INT < 34 || manager.canUseFullScreenIntent()))
             builder.setFullScreenIntent(pending, true)
         try { manager.notify(id, builder.build()) } catch (_: SecurityException) { /* Revocation is a normal runtime event. */ }

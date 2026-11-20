@@ -1,0 +1,4 @@
+# SHA-256 | type. This starter set contains only the harmless EICAR standard 68-byte test.
+# Source: https://www.eicar.org/download-anti-malware-testfile/
+# No real malware samples were downloaded or executed.
+275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f EICAR_TEST

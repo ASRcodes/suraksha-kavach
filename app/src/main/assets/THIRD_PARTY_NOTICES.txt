@@ -32,3 +32,9 @@ Bundled warning WAV files are generated from our static scripts with eSpeak NG 1
 eSpeak NG is GPL-3.0; the generator executable/data are build-only and not bundled.
 Source: https://github.com/espeak-ng/espeak-ng/releases/tag/1.52.0
 Generation scripts, source checksum and audio hashes: tools/ and docs/validation/.
+
+Phase 4 test data: standard harmless EICAR 68-byte test signature.
+Official source: https://www.eicar.org/download-anti-malware-testfile/
+No real malware samples or comprehensive malware hash feed are included.
+The permission-only dummy APK is original test content compiled with Android SDK aapt2 36.1.0.
+It contains manifest/resources only and is not bundled in the production APK.

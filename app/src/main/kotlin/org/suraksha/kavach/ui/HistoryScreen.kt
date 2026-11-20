@@ -56,7 +56,7 @@ fun ActivityCard(entry: HistoryEntry, open: (ScanResult) -> Unit) {
             disabledContentColor = Ink)) {
         Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(stringResource(levelLabel(result.verdict.level)), color = color, style = MaterialTheme.typography.titleMedium)
-            Text(entry.domain.ifBlank { stringResource(R.string.message_warning) }, style = MaterialTheme.typography.bodyLarge)
+            Text(entry.domain.ifBlank { stringResource(if (ReasonCode.FILE_SCAN in result.verdict.reasonCodes) R.string.file_history else R.string.message_warning) }, style = MaterialTheme.typography.bodyLarge)
             Text(time, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             if (ReasonCode.DEMO_ONLY in result.verdict.reasonCodes)
                 Text(stringResource(R.string.demo_badge), style = MaterialTheme.typography.bodyMedium)

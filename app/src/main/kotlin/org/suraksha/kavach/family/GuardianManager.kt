@@ -77,7 +77,7 @@ class GuardianManager(private val context: Context, private val secrets: SecretS
     }
 
     suspend fun onDanger(result: ScanResult) = mutex.withLock {
-        if (result.verdict.level != Level.DANGEROUS || ReasonCode.DEMO_ONLY in result.verdict.reasonCodes) return@withLock
+        if (result.verdict.level != Level.DANGEROUS || result.verdict.reasonCodes.any { it == ReasonCode.DEMO_ONLY || it == ReasonCode.EICAR_TEST }) return@withLock
         if (!prefs.getBoolean("enabled", false)) return@withLock
         val destination = runCatching { number() }.getOrNull() ?: return@withLock
         if (!permission()) { refresh(); return@withLock }

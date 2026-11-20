@@ -6,7 +6,7 @@ enum class ReasonCode {
     BRAND_IN_SUBDOMAIN, IP_HOST, RISKY_TLD, MANY_HYPHENS, LONG_URL,
     SHORTENER, CREDENTIAL_PATH, USER_INFO, URL_MODEL, SCAM_LANGUAGE,
     INVALID_URL, KNOWN_BAD_HASH, RISKY_PERMISSIONS, SUSPICIOUS_FILENAME,
-    UNREADABLE_FILE, NO_KNOWN_THREAT
+    UNREADABLE_FILE, NO_KNOWN_THREAT, FILE_SCAN, EICAR_TEST
 }
 data class Verdict(val level: Level, val score: Double, val reasonCodes: Set<ReasonCode>) {
     init { require(score.isFinite() && score in 0.0..1.0) }

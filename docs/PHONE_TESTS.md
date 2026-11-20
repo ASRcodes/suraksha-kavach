@@ -45,3 +45,12 @@ Guardian SMS and spoken warnings are added in Phase 3. Full-screen background be
 7. Revoke SMS or overlay permission in Android settings. Return to setup and verify status updates and local scanning still works.
 
 Airplane mode validates local detection/audio/history, not carrier delivery. SMS can fail or remain queued without cellular service. Emulator tests use a fake SMS transport; physical carrier delivery remains a phone check.
+
+## Phase 4 phone checks
+1. Home > Check a file: choose a normal local text or image file. Expect No known warning signs, with the limited-check explanation.
+2. Check the standard harmless EICAR test file: expect a clearly labelled EICAR test warning, no guardian SMS, and no file execution. Do not use real malware.
+3. Copy the manifest-only dummy-risky.apk from app/src/androidTest/assets to the phone. Do not install it. Share it from Files to Kavach: expect a red file warning about permissions. Rename it to ordinary.zip and repeat; the permissions should still trigger.
+4. Check an unreadable/truncated APK: expect caution, never a green result. Activity must show File check and time without a filename, file contents or hash.
+5. Optionally choose a small Downloads subfolder to watch, then add a new test file and tap Check new files now. Revoke folder access and confirm the app asks you to choose a folder again. Background checks may be delayed by Android.
+6. Settings > Set a family code word: save matching entries. Home > suspicious call: verify the large code-word and hang-up/callback instructions, then check correct and incorrect answers. A correct answer must still recommend calling the saved number.
+7. Restart the app and confirm the code still works. Clear all data and confirm the guardian, code, watched-folder access and history are reset.

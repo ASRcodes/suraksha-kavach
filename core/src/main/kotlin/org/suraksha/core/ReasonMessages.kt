@@ -2,6 +2,8 @@ package org.suraksha.core
 
 object ReasonMessages {
     private val messages = mapOf(
+        ReasonCode.FILE_SCAN to listOf("This file was checked locally.", "इस फ़ाइल की जाँच फ़ोन पर हुई।", "ਇਸ ਫ਼ਾਈਲ ਦੀ ਜਾਂਚ ਫ਼ੋਨ ਉੱਤੇ ਹੋਈ।"),
+        ReasonCode.EICAR_TEST to listOf("This is the harmless EICAR test file. It is not a real virus.", "यह हानिरहित EICAR परीक्षण फ़ाइल है। यह असली वायरस नहीं है।", "ਇਹ ਨੁਕਸਾਨ ਰਹਿਤ EICAR ਟੈਸਟ ਫ਼ਾਈਲ ਹੈ। ਇਹ ਅਸਲੀ ਵਾਇਰਸ ਨਹੀਂ ਹੈ।"),
         ReasonCode.DEMO_ONLY to listOf("Test alert. This is not a real risk assessment.", "परीक्षण चेतावनी है। यह असली ख़तरे का आकलन नहीं है।", "ਇਹ ਟੈਸਟ ਚੇਤਾਵਨੀ ਹੈ। ਇਹ ਅਸਲੀ ਖ਼ਤਰੇ ਦੀ ਜਾਂਚ ਨਹੀਂ ਹੈ।"),
         ReasonCode.TRUSTED_DOMAIN to listOf("This is an exact match for a trusted domain.", "यह भरोसेमंद डोमेन से ठीक मेल खाता है।", "ਇਹ ਭਰੋਸੇਯੋਗ ਡੋਮੇਨ ਨਾਲ ਪੂਰੀ ਤਰ੍ਹਾਂ ਮੇਲ ਖਾਂਦਾ ਹੈ।"),
         ReasonCode.KNOWN_PHISHING to listOf("This domain is in the offline phishing list.", "यह डोमेन ऑफ़लाइन धोखाधड़ी सूची में है।", "ਇਹ ਡੋਮੇਨ ਆਫ਼ਲਾਈਨ ਧੋਖਾਧੜੀ ਸੂਚੀ ਵਿੱਚ ਹੈ।"),

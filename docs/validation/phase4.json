@@ -1,0 +1,21 @@
+{
+  "phase": 4,
+  "build": "passed",
+  "core_tests": 30,
+  "core_failures": 0,
+  "lint": "no issues",
+  "android_api": 26,
+  "physical_device": false,
+  "instrumentation_tests": 10,
+  "failures": 0,
+  "seconds": 47.488,
+  "airplane_mode": true,
+  "network": "Active default network: none",
+  "debug_apk_sha256": "5c996ccfff7b0a8aaad5d80ac454835f7d83bcc455fc98815315687af062db99",
+  "remaining_phone_checks": [
+    "carrier SMS",
+    "audio pronunciation",
+    "real permission and battery behavior",
+    "SAF folder watcher on the phone"
+  ]
+}

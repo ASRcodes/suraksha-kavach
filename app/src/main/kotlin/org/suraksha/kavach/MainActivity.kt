@@ -43,7 +43,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.suraksha.kavach.ui.*
 
-enum class Page { HOME, ACTIVITY, SETTINGS, CHECK, SETUP, DEBUG, GUARDIAN }
+enum class Page { HOME, ACTIVITY, SETTINGS, CHECK, SETUP, DEBUG, GUARDIAN, FILES, CODE, CALL }
 data class PermissionStatus(val notifications: Boolean, val listener: Boolean, val connected: Boolean, val fullScreen: Boolean,
     val overlay: Boolean, val battery: Boolean, val sms: Boolean)
 
@@ -60,6 +60,8 @@ class MainActivity : LocalizedActivity() {
             KavachTheme {
                 var page by rememberSaveable { mutableStateOf(initialPage) }
                 LaunchedEffect(requestedPage) { requestedPage?.let { page = it; requestedPage = null } }
+                val pageScroll = rememberScrollState()
+                LaunchedEffect(page) { pageScroll.scrollTo(0) }
                 var revision by remember { mutableIntStateOf(0) }
                 val connected by graph.listenerConnected.collectAsStateWithLifecycle()
                 val history by graph.history.collectAsStateWithLifecycle()
@@ -106,7 +108,7 @@ class MainActivity : LocalizedActivity() {
                     if (page == Page.ACTIVITY) {
                         HistoryScreen(history, Modifier.fillMaxSize().padding(padding)) { startActivity(AlertActivity.intent(this@MainActivity, it)) }
                     } else {
-                        Column(Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState()).imePadding()
+                        Column(Modifier.fillMaxSize().padding(padding).verticalScroll(pageScroll).imePadding()
                             .padding(horizontal = 22.dp, vertical = 20.dp), verticalArrangement = Arrangement.spacedBy(22.dp)) {
                             BrandHeader()
                             if (page !in setOf(Page.HOME, Page.SETTINGS)) {
@@ -117,8 +119,11 @@ class MainActivity : LocalizedActivity() {
                                 Page.CHECK -> ScanScreen(graph, false) { startActivity(AlertActivity.intent(this@MainActivity, it)) }
                                 Page.DEBUG -> ScanScreen(graph, true) { startActivity(AlertActivity.intent(this@MainActivity, it)) }
                                 Page.SETTINGS -> SettingsScreen(graph, state, onLanguage = { graph.settings.setLanguage(it); recreate() },
-                                    onSetup = { page = Page.SETUP }, onDebug = { page = Page.DEBUG }, onGuardian = { page = Page.GUARDIAN },
+                                    onSetup = { page = Page.SETUP }, onDebug = { page = Page.DEBUG }, onGuardian = { page = Page.GUARDIAN }, onCode = { page = Page.CODE },
                                     overlayAllowed = allowed.overlay, onOverlay = { enableOverlay(false) })
+                                Page.FILES -> FileScreen(graph) { startActivity(AlertActivity.intent(this@MainActivity, it)) }
+                                Page.CODE -> FamilyCodeScreen(graph)
+                                Page.CALL -> SuspiciousCallScreen(graph) { page = Page.CODE }
                                 Page.GUARDIAN -> GuardianScreen(graph, allowed.sms, requestSms)
                                 Page.SETUP -> SetupScreen(allowed, state.language, if (state.setupComplete) 1 else 0,
                                     onLanguage = { graph.settings.setLanguage(it); recreate() }, onNotifications = requestAlerts,

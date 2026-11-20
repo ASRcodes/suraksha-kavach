@@ -1,0 +1,12 @@
+{
+  "sha256": "be2b139e1683009e22d6dedf8ee808d4a9df643602b08df397dc9f0db512889b",
+  "bytes": 983,
+  "entries": [
+    "AndroidManifest.xml",
+    "resources.arsc"
+  ],
+  "executable_code": false,
+  "signed": false,
+  "installation": "Never installed; archive metadata only",
+  "generator": "Android SDK aapt2 36.1.0"
+}
