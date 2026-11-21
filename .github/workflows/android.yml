@@ -64,13 +64,12 @@ jobs:
           arch: x86_64
           profile: pixel_6
           avd-name: Suraksha_API${{ matrix.api }}_CI
-          ram-size: 2048M
+          ram-size: 3072M
           cores: 2
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
           script: |
-            python3 tools/check_device.py emulator-5554 --app-apk device-apks/app-debug.apk --test-apk device-apks/app-debug-androidTest.apk --large-font
-            python3 tools/check_native_sms.py emulator-5554
+            python3 tools/check_device.py emulator-5554 --app-apk device-apks/app-debug.apk --test-apk device-apks/app-debug-androidTest.apk --large-font --native-sms
       - uses: actions/upload-artifact@v4
         if: always()
         with:

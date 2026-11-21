@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import re
 import subprocess
+import sys
 
 from check_native_sms import find_adb, wait_for_no_default_network
 
@@ -20,6 +21,7 @@ def main() -> int:
     parser.add_argument("--app-apk", default="app/build/outputs/apk/debug/app-debug.apk")
     parser.add_argument("--test-apk", default="app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk")
     parser.add_argument("--large-font", action="store_true")
+    parser.add_argument("--native-sms", action="store_true", help="Also run the incoming-SMS check, even if a UI check fails")
     args = parser.parse_args()
     if not re.fullmatch(r"emulator-\d+", args.serial):
         parser.error("Only dedicated emulators are supported, never a physical phone.")
@@ -37,6 +39,12 @@ def main() -> int:
         parser.error("Use a dedicated Suraksha_API emulator.")
     api = int(adb("shell", "getprop", "ro.build.version.sdk"))
     assert adb("shell", "getprop", "sys.boot_completed") == "1"
+    # Finish the fresh emulator launch before adding application/test startup work.
+    # This targets only the guarded emulator and never dismisses an app crash/ANR.
+    adb("shell", "input", "keyevent", "224")
+    adb("shell", "input", "keyevent", "82")
+    print(adb("shell", "am", "start", "-W", "-a", "android.intent.action.MAIN",
+              "-c", "android.intent.category.HOME", timeout=90), flush=True)
     for apk in (args.app_apk, args.test_apk):
         print(adb("install", "-r", "-g", str((ROOT / apk).resolve()), timeout=120), flush=True)
     adb("shell", "appops", "set", PACKAGE, "SYSTEM_ALERT_WINDOW", "allow")
@@ -74,6 +82,19 @@ def main() -> int:
         summary = {"passed": passed, "executed": codes.count(0), "assumptions": codes.count(-4),
                    "seconds": float(timing.group(1)) if timing else None}
         (artifacts / f"api{api}-{suffix}.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+        if not passed:
+            commands = {"logcat": ["logcat", "-d", "-v", "brief"],
+                        "windows": ["shell", "dumpsys", "window"],
+                        "activities": ["shell", "dumpsys", "activity", "activities"],
+                        "screen": ["exec-out", "screencap", "-p"]}
+            for label, diagnostic_command in commands.items():
+                try:
+                    diagnostic = subprocess.run(base + diagnostic_command, capture_output=True, timeout=30)
+                    extension = "png" if label == "screen" else "txt"
+                    data = diagnostic.stdout if label == "screen" else diagnostic.stdout[-1_000_000:]
+                    (artifacts / f"api{api}-{suffix}-{label}.{extension}").write_bytes(data)
+                except (OSError, subprocess.TimeoutExpired):
+                    print("Could not collect emulator diagnostic: " + label, flush=True)
         return summary
 
     standard = run_case("suite")
@@ -90,8 +111,12 @@ def main() -> int:
         item = subprocess.run(base + ["exec-out", "run-as", PACKAGE, "cat", "cache/" + name], capture_output=True, timeout=30)
         if item.returncode == 0 and (not name.endswith(".png") or item.stdout.startswith(b"\x89PNG")):
             (artifacts / f"api{api}-{name}").write_bytes(item.stdout)
+    if args.native_sms:
+        native = subprocess.run([sys.executable, str(ROOT / "tools/check_native_sms.py"), args.serial])
+        report["native_sms"] = {"passed": native.returncode == 0, "returncode": native.returncode}
     (artifacts / f"api{api}-device.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
-    return 0 if standard["passed"] and report.get("large_font", {}).get("passed", True) else 1
+    return 0 if (standard["passed"] and report.get("large_font", {}).get("passed", True)
+                 and report.get("native_sms", {}).get("passed", True)) else 1
 
 
 if __name__ == "__main__":

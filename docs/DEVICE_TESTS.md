@@ -1,6 +1,6 @@
 # Repeating Android checks
 
-Use a dedicated emulator named Suraksha_API26 or Suraksha_API36. Device tests replace guardian SMS with an in-memory sender. They never contact a carrier, visit a fixture URL, or install the dummy APK. Screenshot access exists only in the test application.
+Use a dedicated emulator named Suraksha_API26, Suraksha_API34 or Suraksha_API36. Device tests replace guardian SMS with an in-memory sender. They never contact a carrier, visit a fixture URL, or install the dummy APK. Screenshot access exists only in the test application.
 
 ## Build and run
 
@@ -28,7 +28,7 @@ The portable helper combines installation, offline-state verification, the suite
 python tools/check_device.py emulator-5582 --large-font
 ~~~
 
-On API 26, enable airplane mode and disable Wi-Fi before invoking it. On current Android versions it configures airplane mode itself. GitHub CI repeats the checks on dedicated Android 14 and Android 16 Linux emulators with KVM and then runs the actual incoming-SMS check below.
+On API 26, enable airplane mode and disable Wi-Fi before invoking it. On current Android versions it configures airplane mode itself and waits for connectivity to finish disconnecting. GitHub CI repeats the checks on dedicated Android 14 and Android 16 Linux emulators with KVM. Adding `--native-sms` also runs the actual incoming-SMS check below, even if a UI check fails; the overall run still fails if either check fails. Failed UI checks collect the emulator's window state, logcat and a screenshot for diagnosis.
 
 ## Actual notification-listener path
 

@@ -6,6 +6,8 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.core.content.FileProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
+import androidx.test.runner.lifecycle.Stage
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Rule
@@ -49,6 +51,17 @@ class PhaseFourDeviceTest {
                 compose.activity.startActivity(Intent(compose.activity, ShareFileActivity::class.java)
                     .setAction(Intent.ACTION_SEND).setType("application/vnd.android.package-archive")
                     .putExtra(Intent.EXTRA_STREAM, uri).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION))
+            }
+            // The share result briefly contains the same title while its activity
+            // hands off to the alert. Wait for the actual foreground warning first.
+            compose.waitUntil(20_000) {
+                var alertReady = false
+                InstrumentationRegistry.getInstrumentation().runOnMainSync {
+                    alertReady = ActivityLifecycleMonitorRegistry.getInstance()
+                        .getActivitiesInStage(Stage.RESUMED).filterIsInstance<AlertActivity>()
+                        .any { it.window.decorView.hasWindowFocus() }
+                }
+                alertReady
             }
             compose.waitUntil(20_000) { compose.onAllNodesWithText(compose.activity.getString(R.string.file_danger_title)).fetchSemanticsNodes().isNotEmpty() }
             compose.onNodeWithText(compose.activity.getString(R.string.file_danger_title)).assertIsDisplayed()

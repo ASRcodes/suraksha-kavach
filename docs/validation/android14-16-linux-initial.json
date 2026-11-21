@@ -1,0 +1,78 @@
+{
+  "source_commit": "57e8e47e747e31ee7789fc6d76a411d9a5a97988",
+  "ci_run": "https://github.com/ASRcodes/suraksha-kavach/actions/runs/44854930993",
+  "passed": false,
+  "physical_device": false,
+  "devices": {
+    "34": {
+      "suite": {
+        "api": 34,
+        "avd": "Suraksha_API34_CI",
+        "physical_device": false,
+        "airplane_mode": true,
+        "network": [
+          "Active default network: none"
+        ],
+        "standard": {
+          "passed": false,
+          "executed": 11,
+          "assumptions": 1,
+          "seconds": 62.744
+        }
+      },
+      "parity_and_latency": {
+        "platform": "android",
+        "api": 34,
+        "model": "sdk_gphone64_x86_64",
+        "emulator": true,
+        "samples": 50,
+        "parity_tolerance": 1e-10,
+        "all_scores_match": true,
+        "model_load_ms": 2067.72626,
+        "median_ms": 3.296236,
+        "p95_ms": 4.313881,
+        "max_ms": 4.772194,
+        "p95_under_200_ms": true
+      }
+    },
+    "36": {
+      "suite": {
+        "api": 36,
+        "avd": "Suraksha_API36_CI",
+        "physical_device": false,
+        "airplane_mode": true,
+        "network": [
+          "Active default network: none"
+        ],
+        "standard": {
+          "passed": false,
+          "executed": 12,
+          "assumptions": 1,
+          "seconds": 57.444
+        }
+      },
+      "parity_and_latency": {
+        "platform": "android",
+        "api": 36,
+        "model": "sdk_gphone64_x86_64",
+        "emulator": true,
+        "samples": 50,
+        "parity_tolerance": 1e-10,
+        "all_scores_match": true,
+        "model_load_ms": 2188.274618,
+        "median_ms": 1.367056,
+        "p95_ms": 17.498487,
+        "max_ms": 25.410218,
+        "p95_under_200_ms": true
+      }
+    }
+  },
+  "observations": [
+    "API 34: 11 standard checks passed; Hindi/Punjabi screen capture and overlay pixel checks failed.",
+    "The API 34 home screenshot shows a Pixel Launcher not responding system dialog covering the app.",
+    "API 36: 12 standard checks passed; the shared-file warning assertion encountered no Compose hierarchy during the activity handoff.",
+    "All 50 model parity rows matched on each API.",
+    "The native incoming-SMS step was not reached because the standard suite failed on each API."
+  ],
+  "follow_up": "Wait for the focused AlertActivity in the share test; await the launcher before test startup; allocate 3 GB to CI emulators; collect failure diagnostics; run native SMS even when another test fails. Verification pending."
+}

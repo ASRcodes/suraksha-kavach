@@ -60,3 +60,7 @@
 ### Malformed-link follow-up
 - A regression test reproduced a dangerous scam-language message being downgraded to suspicious when its link could not be parsed. The fallback now keeps the stronger text verdict and also records the invalid-link reason. A malformed link without scam language still receives caution.
 - All 31 core tests, debug/release builds and lint pass. Models, feature extraction, training data and thresholds are unchanged. All 14 API 26 integration tests, the large-font check and optimized-release smoke test passed again. The release check verifies installation and a separate force-stop/reopen, including a fresh virtual SMS after reconnection. validation/malformed-link-regression.json records the rebuilt APK hashes and results.
+
+### Android 14/16 matrix follow-up
+- The first matrix run after fixing asynchronous offline setup passed 11 standard checks on API 34 and 12 on API 36; both matched all 50 parity rows. API 34's home screenshot shows a Pixel Launcher ANR dialog covering the app; two red-screen pixel checks failed. API 36's shared-file assertion encountered the activity handoff before the warning became the focused activity. See validation/android14-16-linux-initial.json.
+- The share test now waits for the focused warning activity. CI waits for the launcher before starting test work and allocates 3 GB to each emulator. The runner collects UI failure diagnostics and can execute the separate incoming-SMS check even if another check fails, while still failing the overall run. Device rechecks remain pending.
