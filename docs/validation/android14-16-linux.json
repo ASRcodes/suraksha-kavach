@@ -1,0 +1,151 @@
+{
+  "verified_at_utc": "2026-11-21T06:18:52+00:00",
+  "source_commit": "400a17891d55e46dec829cb0595dee133178d3a0",
+  "run_url": "https://github.com/ASRcodes/suraksha-kavach/actions/runs/44874310649",
+  "passed": true,
+  "physical_device": false,
+  "host": "Linux/KVM; dedicated Google API x86_64 emulators, 3072 MB RAM each",
+  "core_tests": {
+    "tests": 31,
+    "failures": 0,
+    "errors": 0
+  },
+  "python_tests_passed": 7,
+  "unique_android_tests_per_api": 14,
+  "additional_large_font_repeat_per_api": 1,
+  "warning_visibility": "The SMS and shared-file checks require a resumed, focused AlertActivity before asserting the warning text. Language and overlay checks also verify red pixels.",
+  "offline_scope": "Standard and 2x-font suites use airplane mode. Virtual incoming SMS uses the emulated radio with Wi-Fi/data disabled and no default IP network; airplane mode is restored afterward.",
+  "local_debug_apk": {
+    "filename": "Suraksha-Kavach-SatHack.apk",
+    "bytes": 35060684,
+    "sha256": "e02c1ef486f7014e3618dd29a16d5e69a51c7789f70714f75b1571e60e0a9910"
+  },
+  "devices": {
+    "34": {
+      "device_suite": {
+        "api": 34,
+        "avd": "Suraksha_API34_CI",
+        "physical_device": false,
+        "airplane_mode": true,
+        "launcher_anr_recovered_before_tests": true,
+        "network": [
+          "Active default network: none"
+        ],
+        "standard": {
+          "passed": true,
+          "executed": 13,
+          "assumptions": 1,
+          "seconds": 48.165
+        },
+        "large_font": {
+          "passed": true,
+          "executed": 1,
+          "assumptions": 0,
+          "seconds": 9.096
+        },
+        "native_sms": {
+          "passed": true,
+          "returncode": 0
+        }
+      },
+      "native_sms": {
+        "avd": "Suraksha_API34_CI",
+        "physical_device": false,
+        "fixture_id": "test-hi-Latn-0",
+        "input_transform": "whitespace folded for the single-line emulator console",
+        "url_opened": false,
+        "carrier_contacted": false,
+        "listener_permission_restored": true,
+        "notification_shell_api": true,
+        "sms_package": "com.google.android.apps.messaging",
+        "airplane_mode_during_sms": false,
+        "original_airplane_mode_restored": true,
+        "network": [
+          "Active default network: none"
+        ],
+        "passed": true,
+        "seconds": 9.496
+      },
+      "parity_and_latency": {
+        "platform": "android",
+        "api": 34,
+        "model": "sdk_gphone64_x86_64",
+        "emulator": true,
+        "samples": 50,
+        "parity_tolerance": 1e-10,
+        "all_scores_match": true,
+        "model_load_ms": 1518.873636,
+        "median_ms": 2.657696,
+        "p95_ms": 3.747362,
+        "max_ms": 3.764607,
+        "p95_under_200_ms": true
+      }
+    },
+    "36": {
+      "device_suite": {
+        "api": 36,
+        "avd": "Suraksha_API36_CI",
+        "physical_device": false,
+        "airplane_mode": true,
+        "launcher_anr_recovered_before_tests": false,
+        "network": [
+          "Active default network: none"
+        ],
+        "standard": {
+          "passed": true,
+          "executed": 13,
+          "assumptions": 1,
+          "seconds": 59.119
+        },
+        "large_font": {
+          "passed": true,
+          "executed": 1,
+          "assumptions": 0,
+          "seconds": 7.502
+        },
+        "native_sms": {
+          "passed": true,
+          "returncode": 0
+        }
+      },
+      "native_sms": {
+        "avd": "Suraksha_API36_CI",
+        "physical_device": false,
+        "fixture_id": "test-hi-Latn-0",
+        "input_transform": "whitespace folded for the single-line emulator console",
+        "url_opened": false,
+        "carrier_contacted": false,
+        "listener_permission_restored": true,
+        "notification_shell_api": true,
+        "sms_package": "com.google.android.apps.messaging",
+        "airplane_mode_during_sms": false,
+        "original_airplane_mode_restored": true,
+        "network": [
+          "Active default network: none"
+        ],
+        "passed": true,
+        "seconds": 10.365
+      },
+      "parity_and_latency": {
+        "platform": "android",
+        "api": 36,
+        "model": "sdk_gphone64_x86_64",
+        "emulator": true,
+        "samples": 50,
+        "parity_tolerance": 1e-10,
+        "all_scores_match": true,
+        "model_load_ms": 1913.040329,
+        "median_ms": 1.759395,
+        "p95_ms": 6.551681,
+        "max_ms": 12.564056,
+        "p95_under_200_ms": true
+      }
+    }
+  },
+  "remaining_phone_checks": [
+    "Notification delivery and alert visibility while locked, in the background, after reboot and under OEM battery restrictions.",
+    "Opted-in guardian carrier SMS and dual-SIM behavior.",
+    "SAF Downloads-folder access and scheduled file checks.",
+    "Hindi/Punjabi pronunciation review and latency on the physical phone."
+  ]
+}

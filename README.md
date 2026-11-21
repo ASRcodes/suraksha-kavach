@@ -73,7 +73,15 @@ These are dataset results. Indic messages are synthetic; Punjabi has only 76 hel
 
 Metrics, confidence intervals, split fingerprints and measured latency are in [ml/reports](ml/reports); see [METRICS.md](ml/reports/METRICS.md) and [training instructions](ml/README.md). No benchmark result is presented as a physical-phone result.
 
-On the Android 8 emulator, all 50 Python/Kotlin parity rows matched at 1e-10. Warm evaluation measured 2.26 ms median and 5.02 ms p95; loading the models took 3.78 seconds and is reported separately. The actual phone still needs timing.
+All 50 Python/Kotlin parity rows match at 1e-10 on Android 8, 14 and 16 emulators. Model loading is measured separately from warmed evaluation:
+
+| Emulator run | Model loading | Median per input | p95 per input |
+|---|---:|---:|---:|
+| [Android 8 / API 26](ml/reports/android_api26_latency.json) | 3.78 s | 2.26 ms | 5.02 ms |
+| [Android 14 / API 34](ml/reports/android_api34_latency.json) | 1.52 s | 2.66 ms | 3.75 ms |
+| [Android 16 / API 36](ml/reports/android_api36_latency.json) | 1.91 s | 1.76 ms | 6.55 ms |
+
+These are separate emulator runs. The actual phone still needs timing.
 
 ## Safe file testing and limits
 
@@ -89,9 +97,11 @@ The optional folder watcher checks new direct children, up to 20 per run in a fo
 
 [docs/PHASES.md](docs/PHASES.md) and [docs/validation](docs/validation) record the Phase 0–5 builds, tests and APK checksums.
 
-Current completed checkpoint: 31 core tests, 7 Python tests and 14 unique Android API 26 emulator tests pass. The separate large-font check and optimized-release smoke test also pass. Airplane mode with no active default network was verified, including an actual virtual-SMS notification reaching the listener and red warning. Debug/release builds and lint pass; all bundled native libraries have 16 KB ELF/ZIP alignment. These checks were repeated after the malformed-link follow-up.
+Current completed checkpoint: 31 core tests, 7 Python tests and all 14 unique Android integration tests pass on API 26, 34 and 36 emulators. The separate 2.0× font checks and API 26 optimized-release smoke test also pass. Debug/release builds and lint pass; all bundled native libraries have 16 KB ELF/ZIP alignment.
 
-The Android 16 Linux/KVM run passed all 13 standard checks, 50-row parity and the 2.0× font check, including the five UI checks that failed on the Windows host. Its separate virtual incoming-SMS test timed out after the listener connected and is being investigated; full Android 16 notification coverage is still pending. Physical-phone checks, carrier SMS delivery and native-speaker audio review remain pending.
+The [Android 14/16 Linux/KVM run](https://github.com/ASRcodes/suraksha-kavach/actions/runs/44874310649) passed all 13 standard checks, the separate incoming-SMS check and the large-font repeat on each API. SMS and shared-file warnings must be resumed and focused before their text is checked. Standard/large-font checks run in airplane mode; virtual SMS enables only the emulated radio, with Wi-Fi/data disabled and no active default IP network. The API 34 setup recovered a Pixel Launcher startup ANR once before testing. The [verification report](docs/validation/android14-16-linux.json) records that recovery and every result; earlier failed attempts remain documented.
+
+Physical-phone checks, carrier SMS delivery, OEM battery/permission behavior, SAF access and native-speaker audio review remain pending. Follow [PHONE_TESTS.md](docs/PHONE_TESTS.md) and [DEMO_CHECKLIST.md](docs/DEMO_CHECKLIST.md).
 
 Android instrumentation substitutes an in-memory SMS sender so tests cannot contact anyone. Only the test application disables secure-window screenshot protection. The debug-only file provider exposes deliberate test fixtures; it is absent from release builds.
 
