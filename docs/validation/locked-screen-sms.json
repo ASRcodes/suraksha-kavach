@@ -1,0 +1,180 @@
+{
+  "verified_at_utc": "2026-11-21T06:47:01+00:00",
+  "source_commit": "0e42a905de5d420a59f2d44dd86b36362875ef3c",
+  "run_url": "https://github.com/ASRcodes/suraksha-kavach/actions/runs/44876520726",
+  "passed": true,
+  "physical_device": false,
+  "purpose": "Verify an incoming SMS can open the focused red warning through Android full-screen notifications while Kavach is in the background and the emulator is locked.",
+  "test_conditions": "Dedicated Google API emulators, no PIN, overlay disabled, full-screen notification permission granted. No manual activity launch or notification tap after SMS injection.",
+  "unique_android_tests_per_api": 14,
+  "additional_variants_per_api": [
+    "2x system font",
+    "locked-screen incoming SMS"
+  ],
+  "local_debug_apk": {
+    "filename": "Suraksha-Kavach-SatHack.apk",
+    "bytes": 35060684,
+    "sha256": "e02c1ef486f7014e3618dd29a16d5e69a51c7789f70714f75b1571e60e0a9910"
+  },
+  "devices": {
+    "34": {
+      "suite": {
+        "api": 34,
+        "avd": "Suraksha_API34_CI",
+        "physical_device": false,
+        "airplane_mode": true,
+        "launcher_anr_recovered_before_tests": false,
+        "network": [
+          "Active default network: none"
+        ],
+        "standard": {
+          "passed": true,
+          "executed": 13,
+          "assumptions": 1,
+          "seconds": 38.12
+        },
+        "large_font": {
+          "passed": true,
+          "executed": 1,
+          "assumptions": 0,
+          "seconds": 7.454
+        },
+        "native_sms": {
+          "passed": true,
+          "returncode": 0
+        },
+        "locked_sms": {
+          "passed": true,
+          "returncode": 0
+        }
+      },
+      "incoming_sms": {
+        "foreground": {
+          "avd": "Suraksha_API34_CI",
+          "physical_device": false,
+          "fixture_id": "test-hi-Latn-0",
+          "input_transform": "whitespace folded for the single-line emulator console",
+          "url_opened": false,
+          "carrier_contacted": false,
+          "listener_permission_restored": true,
+          "notification_shell_api": true,
+          "sms_package": "com.google.android.apps.messaging",
+          "airplane_mode_during_sms": false,
+          "original_airplane_mode_restored": true,
+          "locked_screen_test": false,
+          "locked_background_before_sms": false,
+          "full_screen_notification_visible": false,
+          "lock_and_full_screen_settings_restored": false,
+          "network": [
+            "Active default network: none"
+          ],
+          "passed": true,
+          "seconds": 8.474
+        },
+        "locked": {
+          "avd": "Suraksha_API34_CI",
+          "physical_device": false,
+          "fixture_id": "test-hi-Latn-0",
+          "input_transform": "whitespace folded for the single-line emulator console",
+          "url_opened": false,
+          "carrier_contacted": false,
+          "listener_permission_restored": true,
+          "notification_shell_api": true,
+          "sms_package": "com.google.android.apps.messaging",
+          "airplane_mode_during_sms": false,
+          "original_airplane_mode_restored": true,
+          "locked_screen_test": true,
+          "locked_background_before_sms": true,
+          "full_screen_notification_visible": true,
+          "lock_and_full_screen_settings_restored": true,
+          "network": [
+            "Active default network: none"
+          ],
+          "passed": true,
+          "seconds": 8.771
+        }
+      },
+      "all_50_parity_rows_match": true
+    },
+    "36": {
+      "suite": {
+        "api": 36,
+        "avd": "Suraksha_API36_CI",
+        "physical_device": false,
+        "airplane_mode": true,
+        "launcher_anr_recovered_before_tests": false,
+        "network": [
+          "Active default network: none"
+        ],
+        "standard": {
+          "passed": true,
+          "executed": 13,
+          "assumptions": 1,
+          "seconds": 81.518
+        },
+        "large_font": {
+          "passed": true,
+          "executed": 1,
+          "assumptions": 0,
+          "seconds": 9.137
+        },
+        "native_sms": {
+          "passed": true,
+          "returncode": 0
+        },
+        "locked_sms": {
+          "passed": true,
+          "returncode": 0
+        }
+      },
+      "incoming_sms": {
+        "foreground": {
+          "avd": "Suraksha_API36_CI",
+          "physical_device": false,
+          "fixture_id": "test-hi-Latn-0",
+          "input_transform": "whitespace folded for the single-line emulator console",
+          "url_opened": false,
+          "carrier_contacted": false,
+          "listener_permission_restored": true,
+          "notification_shell_api": true,
+          "sms_package": "com.google.android.apps.messaging",
+          "airplane_mode_during_sms": false,
+          "original_airplane_mode_restored": true,
+          "locked_screen_test": false,
+          "locked_background_before_sms": false,
+          "full_screen_notification_visible": false,
+          "lock_and_full_screen_settings_restored": false,
+          "network": [
+            "Active default network: none"
+          ],
+          "passed": true,
+          "seconds": 11.909
+        },
+        "locked": {
+          "avd": "Suraksha_API36_CI",
+          "physical_device": false,
+          "fixture_id": "test-hi-Latn-0",
+          "input_transform": "whitespace folded for the single-line emulator console",
+          "url_opened": false,
+          "carrier_contacted": false,
+          "listener_permission_restored": true,
+          "notification_shell_api": true,
+          "sms_package": "com.google.android.apps.messaging",
+          "airplane_mode_during_sms": false,
+          "original_airplane_mode_restored": true,
+          "locked_screen_test": true,
+          "locked_background_before_sms": true,
+          "full_screen_notification_visible": true,
+          "lock_and_full_screen_settings_restored": true,
+          "network": [
+            "Active default network: none"
+          ],
+          "passed": true,
+          "seconds": 11.074
+        }
+      },
+      "all_50_parity_rows_match": true
+    }
+  },
+  "remaining_phone_checks": "OEM background/lock-screen permissions and battery policy, opted-in carrier SMS/dual SIM, SAF folder access, pronunciation and latency on the physical phone."
+}
