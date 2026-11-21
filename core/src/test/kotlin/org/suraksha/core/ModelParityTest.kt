@@ -63,6 +63,23 @@ class ModelParityTest {
         }
     }
 
+    @Test fun malformedLinkCannotSuppressDangerousScamLanguage() {
+        val row = samples.map { it.jsonObject }.first {
+            it.getValue("text_score").jsonPrimitive.double >= textModel.dangerousThreshold
+        }
+        val message = TextModel.normalize(row.getValue("message").jsonPrimitive.content)
+        val invalid = "https://example.com:70000"
+        val textVerdict = engine.evaluateText(message)
+        assertEquals(Level.DANGEROUS, textVerdict.level)
+        val result = MessagePipeline(engine).scan("$message $invalid", "regression", false).single()
+        assertEquals(Level.DANGEROUS, result.verdict.level)
+        assertEquals(textVerdict.score, result.verdict.score, 1e-10)
+        assertTrue(ReasonCode.SCAM_LANGUAGE in result.verdict.reasonCodes)
+        assertTrue(ReasonCode.INVALID_URL in result.verdict.reasonCodes)
+        assertEquals(Level.SUSPICIOUS, engine.evaluate(invalid, "").level)
+        assertEquals(setOf(ReasonCode.INVALID_URL), engine.evaluate(invalid, "").reasonCodes)
+    }
+
     @Test fun allReasonsHavePlainLanguageTranslations() {
         ReasonCode.entries.forEach { code ->
             listOf("en", "hi", "pa").forEach { language -> assertTrue(ReasonMessages.get(code, language).length > 10) }

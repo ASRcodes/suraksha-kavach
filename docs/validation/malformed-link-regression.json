@@ -1,0 +1,83 @@
+{
+  "recorded_utc": "2026-11-21T02:07:18.799294+00:00",
+  "change": "Malformed links preserve a stronger scam-language verdict; ordinary malformed links remain suspicious.",
+  "regression_observed_before_fix": true,
+  "core_tests": 31,
+  "core_failures": 0,
+  "debug_and_release_build": "passed",
+  "lint": "no issues",
+  "model_training_or_thresholds_changed": false,
+  "debug_apk_sha256": "e02c1ef486f7014e3618dd29a16d5e69a51c7789f70714f75b1571e60e0a9910",
+  "release_unsigned_apk_sha256": "bbf91d1ed160b6ce17c5e238fe2c2fef4f61361d1c5464dc16087145c3b03d1a",
+  "device_recheck": "passed on API 26",
+  "api26": {
+    "api": 26,
+    "avd": "Suraksha_API26",
+    "physical_device": false,
+    "airplane_mode": true,
+    "network": [
+      "Active default network: none"
+    ],
+    "standard": {
+      "passed": true,
+      "executed": 13,
+      "assumptions": 1,
+      "seconds": 34.208
+    },
+    "large_font": {
+      "passed": true,
+      "executed": 1,
+      "assumptions": 0,
+      "seconds": 7.429
+    }
+  },
+  "native_sms": {
+    "avd": "Suraksha_API26",
+    "physical_device": false,
+    "fixture_id": "test-hi-Latn-0",
+    "input_transform": "whitespace folded for the single-line emulator console",
+    "url_opened": false,
+    "carrier_contacted": false,
+    "listener_permission_restored": true,
+    "notification_shell_api": false,
+    "sms_package": "",
+    "airplane_mode_during_sms": true,
+    "original_airplane_mode_restored": true,
+    "network": [
+      "Active default network: none"
+    ],
+    "passed": true
+  },
+  "optimized_release_smoke": {
+    "api": 26,
+    "physical_device": false,
+    "optimized": true,
+    "normal_application": true,
+    "signed_with_debug_key_for_local_test_only": true,
+    "apk_sha256": "83927c320022934a26a609d47b2fb5a8a76c7bcf4aac8636e1fb75a8257aa54d",
+    "real_sms_listener_to_red_warning": true,
+    "trusted_google_link_silent": true,
+    "encrypted_history_visible_after_scans": true,
+    "network": [
+      "Active default network: none"
+    ],
+    "carrier_contacted": false,
+    "force_stop_reopen_sms_warning": true,
+    "passed": true
+  },
+  "android_latency": {
+    "platform": "android",
+    "api": 26,
+    "model": "Android SDK built for x86_64",
+    "emulator": true,
+    "samples": 50,
+    "parity_tolerance": 1e-10,
+    "all_scores_match": true,
+    "model_load_ms": 2644.900171,
+    "median_ms": 1.331968,
+    "p95_ms": 3.306702,
+    "max_ms": 11.611979,
+    "p95_under_200_ms": true
+  },
+  "android16_notification_recheck": "pending CI rerun with the prepared SMS receiver/radio"
+}

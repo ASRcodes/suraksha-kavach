@@ -61,6 +61,12 @@ def main() -> int:
     avd_name = adb("emu", "avd", "name").splitlines()[0]
     if not avd_name.startswith("Suraksha_API"):
         raise SystemExit("Use a dedicated Suraksha_API emulator for this check.")
+    api = int(adb("shell", "getprop", "ro.build.version.sdk"))
+    original_airplane = adb("shell", "settings", "get", "global", "airplane_mode_on")
+    assert original_airplane in {"0", "1"}
+    sms_package = ""
+    network: list[str] = []
+    airplane_during_test = original_airplane
 
     samples = json.loads((ROOT / "app/src/main/assets/demo_samples.json").read_text(encoding="utf-8"))["samples"]
     sample = next(row for row in samples
@@ -105,6 +111,30 @@ def main() -> int:
     artifacts = ROOT / "artifacts"
     artifacts.mkdir(exist_ok=True)
     try:
+        # A fresh system image needs a notification-capable default SMS receiver.
+        if api >= 31:
+            sms_package = adb("shell", "cmd", "role", "get-role-holders", "--user", "0", "android.app.role.SMS").split(";")[0].strip()
+            if not re.fullmatch(r"[A-Za-z0-9_.]+", sms_package):
+                raise RuntimeError("The dedicated emulator has no default SMS app.")
+            if api >= 33:
+                grant = subprocess.run(base + ["shell", "pm", "grant", sms_package, "android.permission.POST_NOTIFICATIONS"],
+                                       capture_output=True, text=True, timeout=30)
+                if grant.returncode != 0 and "has not requested permission" not in grant.stderr:
+                    raise RuntimeError("Could not enable notifications for the emulator's SMS app.")
+        if api >= 30:
+            # Incoming SMS requires the emulated radio. IP networking stays disabled;
+            # the standard device suite independently verifies airplane-mode inference.
+            adb("shell", "svc", "wifi", "disable")
+            adb("shell", "svc", "data", "disable")
+            adb("shell", "cmd", "connectivity", "airplane-mode", "disable")
+            adb("shell", "svc", "wifi", "disable")
+            adb("shell", "svc", "data", "disable")
+            adb("emu", "gsm", "voice", "home")
+            time.sleep(2)
+        airplane_during_test = adb("shell", "settings", "get", "global", "airplane_mode_on")
+        network = [line.strip() for line in adb("shell", "dumpsys", "connectivity").splitlines()
+                   if "Active default network:" in line]
+        assert network == ["Active default network: none"], network
         while time.monotonic() < deadline:
             try:
                 line = lines.get(timeout=1)
@@ -123,6 +153,15 @@ def main() -> int:
                 set_access(True)
                 rebound = True
             if "READY_FOR_EMULATED_SMS" in line and not sent:
+                bound_until = time.monotonic() + 30
+                while True:
+                    listing = adb("shell", "dumpsys", "notification")
+                    live = re.search(r"Live notification listeners.*?(?=Snoozed notification listeners|\Z)", listing, re.S)
+                    if live and any(alias in live.group(0) for alias in aliases):
+                        break
+                    if time.monotonic() >= bound_until:
+                        raise TimeoutError("The listener did not rebind before SMS injection.")
+                    time.sleep(0.5)
                 response = adb("emu", "sms", "send", "+12025550142", message)
                 if "KO:" in response:
                     raise RuntimeError("The emulator rejected the SMS fixture.")
@@ -137,10 +176,26 @@ def main() -> int:
             process.terminate()
             subprocess.run(base + ["shell", "am", "force-stop", PACKAGE], timeout=20, check=False)
         process.wait(timeout=20)
+        if "OK (1 test)" not in "".join(transcript):
+            # Dedicated-emulator diagnostics contain only synthetic fixture activity.
+            commands = {"logcat": ["logcat", "-d", "-v", "brief"],
+                        "notifications": ["shell", "dumpsys", "notification"],
+                        "telephony": ["shell", "dumpsys", "telephony.registry"],
+                        "roles": ["shell", "dumpsys", "role"]}
+            if sms_package:
+                commands["sms-package"] = ["shell", "dumpsys", "package", sms_package]
+            for name, command in commands.items():
+                try:
+                    diagnostic = subprocess.run(base + command, capture_output=True, timeout=30)
+                    (artifacts / ("native-sms-" + args.serial + "-" + name + ".txt")).write_bytes(diagnostic.stdout[-1_000_000:])
+                except (OSError, subprocess.TimeoutExpired):
+                    print("Could not collect emulator diagnostic: " + name, flush=True)
         if native_access_api:
             set_access(original_enabled)
         else:
             set_listeners(original)
+        if api >= 30 and original_airplane == "1":
+            adb("shell", "cmd", "connectivity", "airplane-mode", "enable")
         (artifacts / ("native-sms-" + args.serial + ".txt")).write_text(
             "".join(transcript), encoding="utf-8")
 
@@ -155,6 +210,10 @@ def main() -> int:
         "carrier_contacted": False,
         "listener_permission_restored": True,
         "notification_shell_api": native_access_api,
+        "sms_package": sms_package,
+        "airplane_mode_during_sms": airplane_during_test == "1",
+        "original_airplane_mode_restored": True,
+        "network": network,
         "passed": success,
     }
     (artifacts / ("native-sms-" + args.serial + ".json")).write_text(

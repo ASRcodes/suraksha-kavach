@@ -4,7 +4,7 @@
   "optimized": true,
   "normal_application": true,
   "signed_with_debug_key_for_local_test_only": true,
-  "apk_sha256": "1fc6711d576e67993c1ee8418c9a56b0a282999c18f277253f8705a1662664a1",
+  "apk_sha256": "83927c320022934a26a609d47b2fb5a8a76c7bcf4aac8636e1fb75a8257aa54d",
   "real_sms_listener_to_red_warning": true,
   "trusted_google_link_silent": true,
   "encrypted_history_visible_after_scans": true,
@@ -12,5 +12,6 @@
     "Active default network: none"
   ],
   "carrier_contacted": false,
+  "force_stop_reopen_sms_warning": true,
   "passed": true
 }

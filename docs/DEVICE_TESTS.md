@@ -38,6 +38,8 @@ python tools/check_native_sms.py emulator-5582
 
 This helper verifies the emulator identity, temporarily enables notification-listener access after instrumentation resets the process, sends one held-out Hinglish fixture through the emulator console and default SMS app, and restores the original listener setting. It folds only whitespace for the single-line console protocol. The fixture's expected label never controls app detection. Reports go into ignored artifacts/.
 
+On current Android emulators it grants the default SMS app notification permission and enables the emulated radio for incoming SMS, while keeping Wi-Fi/mobile data disabled and verifying no active default IP network. It restores the original airplane-mode state afterward. The standard suite separately checks inference, warnings, history and audio in airplane mode. Failure diagnostics are collected only on the guarded, dedicated emulator.
+
 ## Offline and large text
 
 Turn on airplane mode and disable Wi-Fi in the emulator. Verify that dumpsys connectivity reports no active default network before running instrumentation; merely setting the airplane-mode flag is insufficient.

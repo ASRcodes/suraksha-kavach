@@ -1,0 +1,17 @@
+{
+  "api": 36,
+  "host": "GitHub Actions Ubuntu / KVM",
+  "commit": "e475a177cd976016ca2023a47c02542282ac6672",
+  "run_url": "https://github.com/ASRcodes/suraksha-kavach/actions/runs/44851933945",
+  "physical_device": false,
+  "airplane_mode": true,
+  "active_default_network": "none",
+  "build_and_lint": "passed",
+  "python_tests": "passed",
+  "standard_suite": {"executed": 13, "passed": 13, "failed": 0, "assumptions": 1, "seconds": 50.643},
+  "large_font": {"font_scale": 2.0, "passed": true, "seconds": 5.439},
+  "android_python_parity": {"rows": 50, "score_tolerance": 1e-10, "passed": true},
+  "native_sms": {"passed": false, "listener_connected": true, "virtual_sms_injected": true, "failure": "No dangerous history result appeared within 60 seconds"},
+  "overall_run_passed": false,
+  "interpretation": "All five UI checks that failed on the Windows host passed here. The separate virtual incoming-SMS path remains unverified on API 36; investigate receiver notification permission and emulated-radio delivery with no IP network."
+}

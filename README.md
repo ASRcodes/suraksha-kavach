@@ -89,9 +89,9 @@ The optional folder watcher checks new direct children, up to 20 per run in a fo
 
 [docs/PHASES.md](docs/PHASES.md) and [docs/validation](docs/validation) record the Phase 0–5 builds, tests and APK checksums.
 
-Current completed checkpoint: 30 core tests, 7 Python tests and 14 unique Android API 26 emulator tests pass. The separate large-font check and optimized-release smoke test also pass. Airplane mode with no active default network was verified, including an actual virtual-SMS notification reaching the listener and red warning. Debug/release builds and lint pass; all bundled native libraries have 16 KB ELF/ZIP alignment.
+Current completed checkpoint: 31 core tests, 7 Python tests and 14 unique Android API 26 emulator tests pass. The separate large-font check and optimized-release smoke test also pass. Airplane mode with no active default network was verified, including an actual virtual-SMS notification reaching the listener and red warning. Debug/release builds and lint pass; all bundled native libraries have 16 KB ELF/ZIP alignment. These checks were repeated after the malformed-link follow-up.
 
-An Android 16 run on the memory-constrained Windows host had five unresolved UI/screenshot failures. The dedicated Linux/KVM CI job repeats these checks; its result must be recorded before claiming Android 16 coverage. Physical-phone checks, carrier SMS delivery and native-speaker audio review remain pending.
+The Android 16 Linux/KVM run passed all 13 standard checks, 50-row parity and the 2.0× font check, including the five UI checks that failed on the Windows host. Its separate virtual incoming-SMS test timed out after the listener connected and is being investigated; full Android 16 notification coverage is still pending. Physical-phone checks, carrier SMS delivery and native-speaker audio review remain pending.
 
 Android instrumentation substitutes an in-memory SMS sender so tests cannot contact anyone. Only the test application disables secure-window screenshot protection. The debug-only file provider exposes deliberate test fixtures; it is absent from release builds.
 

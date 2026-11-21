@@ -1,0 +1,16 @@
+{
+  "platform": "android",
+  "api": 36,
+  "model": "sdk_gphone64_x86_64",
+  "emulator": true,
+  "samples": 50,
+  "parity_tolerance": 1e-10,
+  "all_scores_match": true,
+  "model_load_ms": 1664.22787,
+  "median_ms": 1.713945,
+  "p95_ms": 5.2641,
+  "max_ms": 9.580436,
+  "p95_under_200_ms": true,
+  "source_commit": "e475a177cd976016ca2023a47c02542282ac6672",
+  "run_url": "https://github.com/ASRcodes/suraksha-kavach/actions/runs/44851933945"
+}

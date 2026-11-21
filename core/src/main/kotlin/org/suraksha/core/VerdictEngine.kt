@@ -23,7 +23,12 @@ class VerdictEngine(
     }
 
     private fun evaluateWithText(input: String, textScore: Double): Verdict {
-        val url = UrlParser.parse(input) ?: return Verdict(Level.SUSPICIOUS, 0.5, setOf(ReasonCode.INVALID_URL))
+        val url = UrlParser.parse(input)
+        if (url == null) {
+            val textVerdict = fromText(textScore)
+            return Verdict(maxOf(Level.SUSPICIOUS, textVerdict.level), maxOf(0.5, textScore),
+                textVerdict.reasonCodes + ReasonCode.INVALID_URL)
+        }
         // The allowlist is a domain prior, not permission to ignore an explicit scam message.
         if (allowlist.contains(url.host) && !url.userInfo && !url.host.split('.').any { it.startsWith("xn--") }) {
             val textVerdict = fromText(textScore)
