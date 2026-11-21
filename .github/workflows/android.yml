@@ -69,7 +69,7 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
           script: |
-            python3 tools/check_device.py emulator-5554 --app-apk device-apks/app-debug.apk --test-apk device-apks/app-debug-androidTest.apk --large-font --native-sms
+            python3 tools/check_device.py emulator-5554 --app-apk device-apks/app-debug.apk --test-apk device-apks/app-debug-androidTest.apk --large-font --native-sms --locked-sms
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -23,6 +23,7 @@ def main() -> int:
     parser.add_argument("--test-apk", default="app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk")
     parser.add_argument("--large-font", action="store_true")
     parser.add_argument("--native-sms", action="store_true", help="Also run the incoming-SMS check, even if a UI check fails")
+    parser.add_argument("--locked-sms", action="store_true", help="Also repeat incoming SMS with the screen locked and overlays off")
     args = parser.parse_args()
     if not re.fullmatch(r"emulator-\d+", args.serial):
         parser.error("Only dedicated emulators are supported, never a physical phone.")
@@ -143,9 +144,13 @@ def main() -> int:
     if args.native_sms:
         native = subprocess.run([sys.executable, str(ROOT / "tools/check_native_sms.py"), args.serial])
         report["native_sms"] = {"passed": native.returncode == 0, "returncode": native.returncode}
+    if args.locked_sms:
+        locked = subprocess.run([sys.executable, str(ROOT / "tools/check_native_sms.py"), args.serial, "--locked"])
+        report["locked_sms"] = {"passed": locked.returncode == 0, "returncode": locked.returncode}
     (artifacts / f"api{api}-device.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     return 0 if (standard["passed"] and report.get("large_font", {}).get("passed", True)
-                 and report.get("native_sms", {}).get("passed", True)) else 1
+                 and report.get("native_sms", {}).get("passed", True)
+                 and report.get("locked_sms", {}).get("passed", True)) else 1
 
 
 if __name__ == "__main__":

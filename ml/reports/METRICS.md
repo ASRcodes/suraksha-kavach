@@ -25,7 +25,9 @@ This includes both models and feature extraction. Phone measurements are pending
 
 Android API 26 emulator: all 50 Python/Kotlin parity rows matched at 1e-10. Warm evaluation measured 2.2566 ms median, 5.0186 ms p95 and 5.8942 ms maximum. Model loading took 3782.1988 ms and is excluded from those warm timings. See android_api26_latency.json. This is an emulator benchmark; the actual phone's under-200-ms target is still unverified.
 
-Android API 36 on Linux/KVM CI: the same 50 parity rows matched at 1e-10, with 1.713945 ms median, 5.2641 ms p95 and 9.580436 ms maximum. Model loading took 1664.22787 ms. See android_api36_latency.json for the source commit and run. Different emulator hosts/configurations make these unsuitable for comparing Android-version performance.
+Android API 34 on Linux/KVM CI: all 50 parity rows matched at 1e-10, with 2.657696 ms median, 3.747362 ms p95 and 3.764607 ms maximum. Model loading took 1518.873636 ms. See [android_api34_latency.json](android_api34_latency.json) for the source commit and run.
+
+Android API 36 on Linux/KVM CI: the same 50 parity rows matched at 1e-10, with 1.759395 ms median, 6.551681 ms p95 and 12.564056 ms maximum. Model loading took 1913.040329 ms. See [android_api36_latency.json](android_api36_latency.json) for the source commit and run. Different emulator hosts/configurations make these unsuitable for comparing Android-version performance.
 
 ## Limitations
 

@@ -42,6 +42,8 @@ This helper verifies the emulator identity, temporarily enables notification-lis
 
 The incoming-SMS and shared-APK UI checks require the warning activity to be resumed and focused before asserting its text. This prevents an activity handoff or a covering system dialog from being mistaken for a visible warning.
 
+To check the background full-screen notification path, run `python tools/check_native_sms.py emulator-5582 --locked`, or add `--locked-sms` to the combined helper. On the dedicated emulator only, this temporarily enables the lock screen and the app's full-screen notification permission, leaves the app, and switches the screen off. Instrumentation confirms the keyguard is locked and no Kavach activity is resumed before the host sends the SMS. The optional overlay is disabled, and the test requires both a focused red activity and a posted full-screen notification. It restores the lock-screen setting, permission and overlay preference afterward. This is a second variant of the same test, not an additional unique test. Its report uses a separate `-locked` suffix.
+
 On current Android emulators it grants the default SMS app notification permission and enables the emulated radio for incoming SMS, while keeping Wi-Fi/mobile data disabled and verifying no active default IP network. It restores the original airplane-mode state afterward. The standard suite separately checks inference, warnings, history and audio in airplane mode. Failure diagnostics are collected only on the guarded, dedicated emulator.
 
 ## Offline and large text

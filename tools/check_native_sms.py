@@ -4,6 +4,8 @@ Install the debug and Android-test APKs first. The Android instrumentation repla
 SmsManager with a fake sender. One held-out fixture goes through the emulator's
 incoming-SMS console, default messaging app, NotificationListenerService and UI.
 No fixture URL is opened. Notification-listener access is restored afterward.
+With --locked, require the background full-screen notification route with the
+overlay disabled. Lock-screen and full-screen permission settings are restored.
 """
 from __future__ import annotations
 
@@ -53,6 +55,7 @@ def wait_for_no_default_network(adb: Callable[..., str], timeout_seconds: float 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("serial", help="Isolated emulator serial, for example emulator-5582")
+    parser.add_argument("--locked", action="store_true", help="Lock the emulator before SMS delivery and require a full-screen warning")
     args = parser.parse_args()
     if not re.fullmatch(r"emulator-\d+", args.serial):
         parser.error("This check only accepts an emulator, never a physical phone.")
@@ -81,6 +84,22 @@ def main() -> int:
     sms_package = ""
     network: list[str] = []
     airplane_during_test = original_airplane
+    original_lock_disabled: str | None = None
+    original_full_screen_mode: str | None = None
+    report_name = "native-sms-" + args.serial + ("-locked" if args.locked else "")
+    if args.locked:
+        original_lock_disabled = adb("shell", "locksettings", "get-disabled", "--user", "0")
+        if original_lock_disabled not in {"true", "false"}:
+            raise RuntimeError("Could not read the dedicated emulator's lock-screen setting.")
+        if api >= 34:
+            operation = adb("shell", "appops", "get", PACKAGE, "USE_FULL_SCREEN_INTENT")
+            mode = re.search(r"USE_FULL_SCREEN_INTENT:\s*(allow|ignore|deny|default|foreground)", operation)
+            if mode:
+                original_full_screen_mode = mode.group(1)
+            elif "No operations" in operation:
+                original_full_screen_mode = "default"
+            else:
+                raise RuntimeError("Could not read the app's full-screen notification permission.")
 
     samples = json.loads((ROOT / "app/src/main/assets/demo_samples.json").read_text(encoding="utf-8"))["samples"]
     sample = next(row for row in samples
@@ -105,8 +124,10 @@ def main() -> int:
         else:
             set_listeners(":".join(others + ([COMPONENT] if enabled else [])))
     command = base + ["shell", "am", "instrument", "-w", "-r", "-e", "class",
-                      PACKAGE + ".NativeNotificationTest", "-e", "native_sms", "true",
-                      PACKAGE + ".test/" + PACKAGE + ".KavachTestRunner"]
+                      PACKAGE + ".NativeNotificationTest", "-e", "native_sms", "true"]
+    if args.locked:
+        command += ["-e", "native_locked", "true"]
+    command.append(PACKAGE + ".test/" + PACKAGE + ".KavachTestRunner")
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                text=True, encoding="utf-8", errors="replace")
     lines: queue.Queue[str | None] = queue.Queue()
@@ -120,6 +141,7 @@ def main() -> int:
     threading.Thread(target=read_output, daemon=True).start()
     transcript: list[str] = []
     sent = rebound = False
+    lock_requested = locked_confirmed = full_screen_visible = False
     finished = False
     deadline = time.monotonic() + 240
     artifacts = ROOT / "artifacts"
@@ -164,7 +186,20 @@ def main() -> int:
                 time.sleep(1)
                 set_access(True)
                 rebound = True
+            if "READY_TO_LOCK_SCREEN" in line and args.locked and not lock_requested:
+                if api >= 34:
+                    adb("shell", "appops", "set", PACKAGE, "USE_FULL_SCREEN_INTENT", "allow")
+                adb("shell", "locksettings", "set-disabled", "--user", "0", "false")
+                adb("shell", "am", "start", "-W", "-a", "android.intent.action.MAIN", "-c", "android.intent.category.HOME")
+                adb("shell", "input", "keyevent", "223")
+                lock_requested = True
+            if "LOCKED_BACKGROUND_CONFIRMED" in line:
+                locked_confirmed = True
+            if "LOCKED_FULL_SCREEN_WARNING_VISIBLE" in line:
+                full_screen_visible = True
             if "READY_FOR_EMULATED_SMS" in line and not sent:
+                if args.locked and not (lock_requested and locked_confirmed):
+                    raise RuntimeError("The app did not confirm a locked, background state before SMS injection.")
                 bound_until = time.monotonic() + 30
                 while True:
                     listing = adb("shell", "dumpsys", "notification")
@@ -192,6 +227,9 @@ def main() -> int:
             # Dedicated-emulator diagnostics contain only synthetic fixture activity.
             commands = {"logcat": ["logcat", "-d", "-v", "brief"],
                         "notifications": ["shell", "dumpsys", "notification"],
+                        "windows": ["shell", "dumpsys", "window"],
+                        "activities": ["shell", "dumpsys", "activity", "activities"],
+                        "power": ["shell", "dumpsys", "power"],
                         "telephony": ["shell", "dumpsys", "telephony.registry"],
                         "roles": ["shell", "dumpsys", "role"]}
             if sms_package:
@@ -199,7 +237,7 @@ def main() -> int:
             for name, command in commands.items():
                 try:
                     diagnostic = subprocess.run(base + command, capture_output=True, timeout=30)
-                    (artifacts / ("native-sms-" + args.serial + "-" + name + ".txt")).write_bytes(diagnostic.stdout[-1_000_000:])
+                    (artifacts / (report_name + "-" + name + ".txt")).write_bytes(diagnostic.stdout[-1_000_000:])
                 except (OSError, subprocess.TimeoutExpired):
                     print("Could not collect emulator diagnostic: " + name, flush=True)
         if native_access_api:
@@ -208,11 +246,20 @@ def main() -> int:
             set_listeners(original)
         if api >= 30 and original_airplane == "1":
             adb("shell", "cmd", "connectivity", "airplane-mode", "enable")
-        (artifacts / ("native-sms-" + args.serial + ".txt")).write_text(
+        if args.locked:
+            if original_full_screen_mode is not None:
+                adb("shell", "appops", "set", PACKAGE, "USE_FULL_SCREEN_INTENT", original_full_screen_mode)
+            assert original_lock_disabled is not None
+            adb("shell", "locksettings", "set-disabled", "--user", "0", original_lock_disabled)
+            adb("shell", "input", "keyevent", "224")
+            adb("shell", "wm", "dismiss-keyguard")
+        (artifacts / (report_name + ".txt")).write_text(
             "".join(transcript), encoding="utf-8")
 
     output = "".join(transcript)
     success = process.returncode == 0 and sent and "OK (1 test)" in output and "FAILURES!!!" not in output
+    if args.locked:
+        success = success and lock_requested and locked_confirmed and full_screen_visible
     report = {
         "avd": avd_name,
         "physical_device": False,
@@ -225,10 +272,14 @@ def main() -> int:
         "sms_package": sms_package,
         "airplane_mode_during_sms": airplane_during_test == "1",
         "original_airplane_mode_restored": True,
+        "locked_screen_test": args.locked,
+        "locked_background_before_sms": locked_confirmed,
+        "full_screen_notification_visible": full_screen_visible,
+        "lock_and_full_screen_settings_restored": args.locked,
         "network": network,
         "passed": success,
     }
-    (artifacts / ("native-sms-" + args.serial + ".json")).write_text(
+    (artifacts / (report_name + ".json")).write_text(
         json.dumps(report, indent=2) + "\n", encoding="utf-8")
     return 0 if success else 1
 
