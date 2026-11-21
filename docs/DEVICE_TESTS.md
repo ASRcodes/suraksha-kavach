@@ -30,6 +30,8 @@ python tools/check_device.py emulator-5582 --large-font
 
 On API 26, enable airplane mode and disable Wi-Fi before invoking it. On current Android versions it configures airplane mode itself and waits for connectivity to finish disconnecting. GitHub CI repeats the checks on dedicated Android 14 and Android 16 Linux emulators with KVM. Adding `--native-sms` also runs the actual incoming-SMS check below, even if a UI check fails; the overall run still fails if either check fails. Failed UI checks collect the emulator's window state, logcat and a screenshot for diagnosis.
 
+Fresh API 34 Google images have displayed a Pixel Launcher ANR over the test app. Before starting application checks, the helper records that specific system dialog and restarts Pixel Launcher at most once if it is present. A second occurrence fails setup. This recovery is reported separately and never dismisses a Kavach crash or changes a test outcome.
+
 ## Actual notification-listener path
 
 ~~~powershell
@@ -37,6 +39,8 @@ python tools/check_native_sms.py emulator-5582
 ~~~
 
 This helper verifies the emulator identity, temporarily enables notification-listener access after instrumentation resets the process, sends one held-out Hinglish fixture through the emulator console and default SMS app, and restores the original listener setting. It folds only whitespace for the single-line console protocol. The fixture's expected label never controls app detection. Reports go into ignored artifacts/.
+
+The incoming-SMS and shared-APK UI checks require the warning activity to be resumed and focused before asserting its text. This prevents an activity handoff or a covering system dialog from being mistaken for a visible warning.
 
 On current Android emulators it grants the default SMS app notification permission and enables the emulated radio for incoming SMS, while keeping Wi-Fi/mobile data disabled and verifying no active default IP network. It restores the original airplane-mode state afterward. The standard suite separately checks inference, warnings, history and audio in airplane mode. Failure diagnostics are collected only on the guarded, dedicated emulator.
 

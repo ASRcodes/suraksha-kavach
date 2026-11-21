@@ -7,6 +7,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import time
 
 from check_native_sms import find_adb, wait_for_no_default_network
 
@@ -59,6 +60,33 @@ def main() -> int:
     adb("shell", "input", "keyevent", "224")
     adb("shell", "input", "keyevent", "82")
 
+    # The fresh API 34 Google image can present a Pixel Launcher ANR during boot.
+    # Recover that specific system app once, before any Kavach check. Preserve the
+    # evidence; never dismiss a Kavach ANR or retry/ignore a failed test.
+    launcher_recovered = False
+    launcher_deadline = time.monotonic() + 30
+    launcher_quiet_until = time.monotonic() + 10
+    while time.monotonic() < launcher_quiet_until:
+        windows = adb("shell", "dumpsys", "window")
+        launcher_anr = re.search(r"mCurrentFocus=.*Application Not Responding: com\.google\.android\.apps\.nexuslauncher", windows)
+        if launcher_anr:
+            (artifacts / f"api{api}-launcher-anr-before-tests.txt").write_text(windows, encoding="utf-8")
+            if launcher_recovered or time.monotonic() >= launcher_deadline:
+                raise RuntimeError("Pixel Launcher is still unresponsive; application checks have not started.")
+            print("Recovering the fresh emulator's Pixel Launcher ANR before application checks.", flush=True)
+            adb("shell", "am", "force-stop", "com.google.android.apps.nexuslauncher")
+            adb("shell", "am", "start", "-W", "-a", "android.intent.action.MAIN",
+                "-c", "android.intent.category.HOME", timeout=90)
+            launcher_recovered = True
+            recovery_deadline = time.monotonic() + 10
+            while re.search(r"mCurrentFocus=.*Application Not Responding: com\.google\.android\.apps\.nexuslauncher",
+                            adb("shell", "dumpsys", "window")):
+                if time.monotonic() >= recovery_deadline:
+                    raise RuntimeError("The Pixel Launcher ANR did not close after restart.")
+                time.sleep(0.25)
+            launcher_quiet_until = time.monotonic() + 10
+        time.sleep(0.5)
+
     def run_case(suffix: str, selected: str | None = None) -> dict:
         command = base + ["shell", "am", "instrument", "-w", "-r"]
         if selected:
@@ -99,6 +127,7 @@ def main() -> int:
 
     standard = run_case("suite")
     report = {"api": api, "avd": avd, "physical_device": False, "airplane_mode": True,
+              "launcher_anr_recovered_before_tests": launcher_recovered,
               "network": network, "standard": standard}
     if args.large_font and standard["passed"]:
         original = adb("shell", "settings", "get", "system", "font_scale")

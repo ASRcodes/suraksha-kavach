@@ -25,6 +25,7 @@ class NativeNotificationTest {
         val started = System.currentTimeMillis()
         InstrumentationRegistry.getInstrumentation().sendStatus(2, Bundle().apply { putString("stream", "READY_FOR_EMULATED_SMS\n") })
         compose.waitUntil(60_000) { app.history.value.any { it.timestamp >= started && it.level == Level.DANGEROUS.name } }
+        compose.waitForFocusedAlert()
         compose.waitUntil(15_000) { compose.onAllNodesWithText(compose.activity.getString(R.string.alert_title)).fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithText(compose.activity.getString(R.string.alert_title)).assertIsDisplayed()
         compose.onNodeWithText(compose.activity.getString(R.string.understand)).performClick()
