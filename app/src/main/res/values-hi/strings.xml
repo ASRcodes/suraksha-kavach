@@ -22,7 +22,7 @@
   <string name="full_screen_detail">लॉक स्क्रीन पर बड़ी चेतावनी की अनुमति दें। Android इसकी जगह सूचना भी दिखा सकता है।</string>
   <string name="open_settings">सेटिंग्स खोलें</string>
   <string name="simulate_message">संदेश का परीक्षण करें</string>
-  <string name="simulation_detail">परीक्षण संदेश डालें। कोई संदेश भेजे बिना, वही जाँच चलेगी जो सूचनाओं पर चलती है।</string>
+  <string name="simulation_detail">सूचनाओं वाली ही जाँच आज़माएँ। लिंक नहीं खुलेंगे। असली खतरनाक नतीजे पर आपकी SMS सेटिंग के अनुसार परिवार को सूचना जा सकती है। TEST चेतावनी SMS नहीं भेजती।</string>
   <string name="message_label">जाँच के लिए संदेश</string>
   <string name="check_message">संदेश जाँचें</string>
   <string name="back_home">होम पर लौटें</string>
@@ -62,7 +62,7 @@
   <string name="level_safe">ख़तरे का संकेत नहीं मिला</string>
   <string name="level_suspicious">किसी भरोसेमंद व्यक्ति से पूछें</string>
   <string name="level_dangerous">ख़तरनाक • सावधान रहें</string>
-  <string name="manual_check_detail">संदेश पेस्ट करें या वेबसाइट का पता लिखें। कुछ खोला या भेजा नहीं जाएगा।</string>
+  <string name="manual_check_detail">संदेश या वेबसाइट का पता डालें। लिंक नहीं खुलेंगे। परिवार को SMS चालू है तो खतरनाक नतीजे पर सूचना जा सकती है।</string>
   <string name="safe_note">कोई ज्ञात ख़तरे का संकेत नहीं मिला। पैसों, पासवर्ड और OTP के बारे में सावधान रहें।</string>
   <string name="held_out_examples">परीक्षण के उदाहरण आज़माएँ</string>
   <string name="held_out_detail">ये सार्वजनिक उदाहरण प्रशिक्षण से अलग रखे गए थे। असली स्कैनर इनकी जाँच करता है। लिंक कभी नहीं खोले जाते।</string>
@@ -88,7 +88,7 @@
   <string name="clear_all">मेरा सारा डेटा मिटाएँ</string>
   <string name="clear_failed">स्टोरेज मिटाने के लिए Android की ऐप सेटिंग्स खोलें।</string>
   <string name="clear_confirm_title">फिर से शुरू करें?</string>
-  <string name="clear_confirm_detail">इससे हाल की जाँच, परिवार की सेटिंग्स और पसंद मिट जाएँगी। कवच बंद होगा और फिर से सेटअप करना होगा।</string>
+  <string name="clear_confirm_detail">गतिविधि, सेटिंग, पारिवारिक नंबर, गुप्त शब्द और फ़ोल्डर की अनुमति मिट जाएँगे। ऐप बंद होकर अगली बार नए सिरे से शुरू होगा।</string>
   <string name="keep_data">मेरा डेटा रखें</string>
   <string name="alert_message_title">रुकें। यह संदेश\nधोखा हो सकता है</string>
   <string name="family_title">आपका अपना कोई</string>
@@ -129,7 +129,7 @@
   <string name="setup_later">सेटअप बाद में पूरा करूँगा</string>
   <string name="spoken_warning">सावधान। धोखा हो सकता है। ओ टी पी, पिन या पैसे मत दें। अपने परिवार से बात करें।</string>
   <string name="check_file">फ़ाइल या APK जाँचें</string>
-  <string name="file_intro">इस फ़ोन पर रखी 100 MB तक की फ़ाइल चुनें। कवच उसके हस्ताक्षर और APK की अनुमतियाँ जाँचता है। ऐप को कभी इंस्टॉल या चालू नहीं करता।</string>
+  <string name="file_intro">इस फ़ोन पर रखी 100 MB तक की फ़ाइल चुनें। कवच ज्ञात ख़तरों और APK की शक्तिशाली अनुमतियों को जाँचता है। ऐप को कभी इंस्टॉल या चालू नहीं करता।</string>
   <string name="pick_file">फ़ाइल चुनें</string>
   <string name="file_busy">फ़ोन पर जाँच हो रही है…</string>
   <string name="file_safe">कोई ज्ञात ख़तरे का संकेत नहीं मिला</string>
@@ -139,7 +139,7 @@
   <string name="eicar_title">हानिरहित परीक्षण\nफ़ाइल मिली</string>
   <string name="file_test_badge">EICAR परीक्षण</string>
   <string name="watch_folder">फ़ोल्डर की जाँच · वैकल्पिक</string>
-  <string name="watch_detail">Downloads के अंदर छोटा फ़ोल्डर चुनें। Android की अनुमति मिलने पर नई फ़ाइलें लगभग हर 15 मिनट में जाँची जाती हैं। केवल यही फ़ोल्डर जाँचा जाएगा; फ़ाइल की बदलाव की तारीख होनी चाहिए। पुरानी फ़ाइल के लिए फ़ाइल चुनें दबाएँ।</string>
+  <string name="watch_detail">Downloads के अंदर छोटा फ़ोल्डर चुनें। Android की अनुमति मिलने पर नई फ़ाइलें लगभग हर 15 मिनट में जाँची जाती हैं। कुछ स्टोरेज ऐप नई फ़ाइलें नहीं बता पाते। आप कभी भी फ़ाइल चुनें से खुद जाँच सकते हैं।</string>
   <string name="watch_choose">फ़ोल्डर चुनें</string>
   <string name="watch_stop">इस फ़ोल्डर की जाँच बंद करें</string>
   <string name="watch_check">नई फ़ाइलें अभी जाँचें</string>
@@ -147,7 +147,7 @@
   <string name="watch_ready">फ़ोल्डर की अनुमति है। नई फ़ाइलें जाँची जाएँगी।</string>
   <string name="watch_access">फ़ोल्डर की जाँच नहीं हो सकी। फ़ोन पर 1,000 से कम फ़ाइलों वाला फ़ोल्डर चुनें और पढ़ने की अनुमति दें।</string>
   <string name="family_code_title">परिवार का गुप्त शब्द रखें</string>
-  <string name="code_detail">परिवार के साथ मिलकर निजी गुप्त शब्द तय करें। 4–64 अक्षर रखें। केवल उसका सुरक्षित हैश रखा जाएगा; शब्द दोबारा दिखाया या वापस नहीं पाया जा सकता।</string>
+  <string name="code_detail">परिवार के साथ मिलकर निजी गुप्त शब्द तय करें। 4–64 अक्षर रखें। कवच सहेजा हुआ शब्द दिखा नहीं सकता। भूल जाएँ तो नया शब्द तय करें।</string>
   <string name="code_input">परिवार का गुप्त शब्द</string>
   <string name="code_confirm">गुप्त शब्द फिर लिखें</string>
   <string name="code_save">गुप्त शब्द सहेजें</string>

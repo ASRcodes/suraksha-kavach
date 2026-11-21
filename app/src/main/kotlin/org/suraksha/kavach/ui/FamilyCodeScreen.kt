@@ -6,6 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -22,6 +23,7 @@ fun FamilyCodeScreen(graph: KavachApplication) {
     var busy by remember { mutableStateOf(false) }
     var status by remember { mutableIntStateOf(0) }
     val scope = rememberCoroutineScope()
+    val keyboard = LocalSoftwareKeyboardController.current
     Text(stringResource(R.string.family_code_title), style = MaterialTheme.typography.headlineLarge)
     Text(stringResource(R.string.code_detail))
     OutlinedTextField(word, { word = it.take(256); status = 0 }, enabled = !busy, singleLine = true,
@@ -33,6 +35,7 @@ fun FamilyCodeScreen(graph: KavachApplication) {
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, autoCorrectEnabled = false),
         modifier = Modifier.fillMaxWidth().testTag("familyCodeConfirm"))
     Button(onClick = {
+        keyboard?.hide()
         if (word != confirmation) status = R.string.code_mismatch
         else {
             val input = word
@@ -57,6 +60,7 @@ fun SuspiciousCallScreen(graph: KavachApplication, setCode: () -> Unit) {
     var checking by remember { mutableStateOf(false) }
     var result by remember { mutableStateOf<Boolean?>(null) }
     val scope = rememberCoroutineScope()
+    val keyboard = LocalSoftwareKeyboardController.current
     LaunchedEffect(Unit) { configured = runCatching { graph.familyCode.configured() }.getOrDefault(false) }
     Text(stringResource(R.string.suspicious_call_title), style = MaterialTheme.typography.headlineLarge)
     Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)) {
@@ -74,6 +78,7 @@ fun SuspiciousCallScreen(graph: KavachApplication, setCode: () -> Unit) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, autoCorrectEnabled = false),
             modifier = Modifier.fillMaxWidth().testTag("codeAnswer"))
         OutlinedButton(onClick = {
+            keyboard?.hide()
             val input = answer; answer = ""; checking = true
             scope.launch {
                 try { result = graph.familyCode.matches(input) }

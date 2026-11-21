@@ -49,7 +49,7 @@ fun EmptyHistory() {
 fun ActivityCard(entry: HistoryEntry, open: (ScanResult) -> Unit) {
     val result = entry.toResult()
     val color = when (result.verdict.level) { Level.SAFE -> Forest; Level.SUSPICIOUS -> Color(0xFF805000); Level.DANGEROUS -> Danger }
-    val time = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, LocalConfiguration.current.locales[0]).format(Date(entry.timestamp))
+    val time = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, LocalConfiguration.current.locales[0]).format(Date(entry.timestamp))
     Card(onClick = { open(result) }, enabled = result.verdict.level != Level.SAFE,
         shape = RoundedCornerShape(22.dp), modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = Color.White, disabledContainerColor = Color.White,

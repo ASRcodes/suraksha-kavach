@@ -59,7 +59,7 @@ class AlertActivity : LocalizedActivity() {
                 BackHandler { dismiss() }
                 WarningScreen(result, settings.language, onUnderstand = ::dismiss,
                     onGuardian = { graph.dismissWarnings(); graph.callGuardian(this); finish() },
-                    onReplay = { graph.alerts.cancel(); graph.speakWarning() },
+                    onReplay = { graph.alerts.cancel(); graph.previewWarning() },
                     guardianStatus = if (guardian.enabled) stringResource(guardianStatusLabel(guardian.status)) else null)
             }
         }

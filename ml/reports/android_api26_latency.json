@@ -1,0 +1,14 @@
+{
+  "platform": "android",
+  "api": 26,
+  "model": "Android SDK built for x86_64",
+  "emulator": true,
+  "samples": 50,
+  "parity_tolerance": 1e-10,
+  "all_scores_match": true,
+  "model_load_ms": 3782.1988,
+  "median_ms": 2.2566,
+  "p95_ms": 5.0186,
+  "max_ms": 5.8942,
+  "p95_under_200_ms": true
+}

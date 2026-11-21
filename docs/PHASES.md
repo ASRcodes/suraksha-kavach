@@ -45,3 +45,14 @@
 - The code-word setup/check UI and salted-hash storage passed. Correct answers continue to recommend hanging up and calling a saved number.
 - The dummy fixture contains only AndroidManifest.xml and an empty resources.arsc table, with hasCode=false and no components. It was inspected, never installed or executed.
 - The optional folder watcher needs a phone SAF-provider/battery check; it is explicitly bounded and best effort.
+
+## Phase 5
+- Core: 30 tests passed. Python: 7 tests passed. Debug, instrumentation and R8-optimized unsigned release APKs build; lint reports no issues.
+- Android API 26 offline suite: 13 executed tests passed in 88.485 seconds. The incoming-SMS case is deliberately deferred in that run, then separately executed and passed in 9.832 seconds: 14 unique Android tests passed overall.
+- Hindi/Punjabi warnings also passed at 2.0× system font size in 10.682 seconds; titles, fixed bottom actions and scrolling to replay were checked. Actual screenshots are in images/.
+- All 50 Android/Python parity rows match at 1e-10. Warm evaluation median 2.2566 ms, p95 5.0186 ms and max 5.8942 ms; model loading took 3782.1988 ms. These are emulator measurements, not phone measurements.
+- The optimized APK, locally signed with the Android debug key only for testing, passed a real virtual-SMS notification → listener → red-warning check. A normal Google link remained silent; encrypted history remained usable with no active network. Reopening after force-stop successfully reconnected the listener.
+- Every bundled native library passed structural 16 KB ELF-load and APK-entry alignment checks. The unsigned release still requires a proper release signing key for distribution.
+- Protection pause is rechecked around asynchronous work; notification text uses a bounded transient queue; cancellation, denied permissions, disabled channels, guardian updates and clear-data cleanup are handled. UI wording explains optional guardian SMS and avoids model jargon.
+- The earlier Android 16 Windows run had five unresolved UI/screenshot failures. See validation/android36-windows-attempt.json. The Linux/KVM CI job is the follow-up; do not count that platform as passed until its results are recorded.
+- Physical-phone delivery, notification/permission/battery behavior, SAF access, pronunciation and timing remain pending. Follow PHONE_TESTS.md and DEMO_CHECKLIST.md.

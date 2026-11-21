@@ -16,6 +16,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.suraksha.kavach.*
 import org.suraksha.kavach.R
 import org.suraksha.kavach.data.SettingsState
@@ -41,7 +43,7 @@ fun SettingsScreen(graph: KavachApplication, settings: SettingsState, onLanguage
     OutlinedButton(onClick = onSetup, modifier = Modifier.fillMaxWidth().heightIn(min = 60.dp)) { Text(stringResource(R.string.permission_settings)) }
     SettingToggle(stringResource(R.string.voice_warnings), stringResource(R.string.voice_detail), settings.voiceEnabled,
         { graph.settings.setVoice(it); if (!it) graph.audio.stop() })
-    OutlinedButton(onClick = { graph.speakWarning() }, modifier = Modifier.fillMaxWidth().heightIn(min = 60.dp)) { Text(stringResource(R.string.hear_sample)) }
+    OutlinedButton(onClick = { graph.previewWarning() }, modifier = Modifier.fillMaxWidth().heightIn(min = 60.dp)) { Text(stringResource(R.string.hear_sample)) }
     OutlinedButton(onClick = onGuardian, modifier = Modifier.fillMaxWidth().heightIn(min = 60.dp)) { Text(stringResource(R.string.family_setup)) }
     OutlinedButton(onClick = onCode, modifier = Modifier.fillMaxWidth().heightIn(min = 60.dp)) { Text(stringResource(R.string.family_code_title)) }
     SettingToggle(stringResource(R.string.overlay_title), stringResource(R.string.overlay_detail), overlayAllowed,
@@ -78,9 +80,12 @@ fun SettingsScreen(graph: KavachApplication, settings: SettingsState, onLanguage
         title = { Text(stringResource(R.string.clear_confirm_title)) },
         text = { Text(stringResource(R.string.clear_confirm_detail)) },
         confirmButton = { TextButton(onClick = {
-            graph.alerts.cancel()
+            graph.dismissWarnings()
             confirmClear = false
-            clearFailed = !context.getSystemService(ActivityManager::class.java).clearApplicationUserData()
+            scope.launch {
+                withContext(Dispatchers.IO) { runCatching { graph.watcher.disable() } }
+                clearFailed = !context.getSystemService(ActivityManager::class.java).clearApplicationUserData()
+            }
         }) { Text(stringResource(R.string.clear_all), color = Danger) } },
         dismissButton = { TextButton(onClick = { confirmClear = false }) { Text(stringResource(R.string.keep_data)) } })
 }

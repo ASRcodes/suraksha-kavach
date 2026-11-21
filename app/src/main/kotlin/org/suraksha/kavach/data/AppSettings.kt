@@ -42,6 +42,8 @@ class AppSettings(context: Context) {
     fun setEnhanced(value: Boolean) = change { putBoolean("enhanced", value) }
     fun setVoice(value: Boolean) = change { putBoolean("voice", value) }
     fun setOverlay(value: Boolean) = change { putBoolean("overlay", value) }
+    fun wasAsked(permission: String): Boolean = prefs.getBoolean("asked_" + permission, false)
+    fun markAsked(permission: String) = change { putBoolean("asked_" + permission, true) }
     fun finishSetup() = change { putBoolean("setup_complete", true) }
 
     companion object {

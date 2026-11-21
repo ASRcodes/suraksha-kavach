@@ -51,6 +51,7 @@ class PhaseThreeDeviceTest {
             assertTrue(attempts.isEmpty())
             permitted = true
             guardian.onDanger(danger.copy(verdict = Verdict(Level.DANGEROUS, 1.0, setOf(ReasonCode.DEMO_ONLY))))
+            guardian.onDanger(danger.copy(verdict = Verdict(Level.DANGEROUS, 1.0, setOf(ReasonCode.FILE_SCAN, ReasonCode.EICAR_TEST))))
             guardian.onDanger(danger.copy(verdict = Verdict(Level.SUSPICIOUS, 0.5, setOf(ReasonCode.SHORTENER))))
             assertTrue(attempts.isEmpty())
             guardian.onDanger(danger)

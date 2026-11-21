@@ -244,7 +244,7 @@ def main():
     })
     asset_metadata = {"generated_utc": report["created_utc"], "schema_version":1,
         "files": {name: hashlib.sha256((ASSETS/name).read_bytes()).hexdigest() for name in
-            ("url_model.json","text_model.json","top_domains.txt","blocklist.txt","public_suffix_list.dat","demo_samples.json")}}
+            ("url_model.json","text_model.json","top_domains.txt","blocklist.txt","public_suffix_list.dat","demo_samples.json","bad_hashes.txt") if (ASSETS/name).is_file()}}
     write_json(ASSETS / "asset_manifest.json", asset_metadata)
     lines = ["# Held-out results", "", "Thresholds were selected on validation data only. Test rows were never used to fit models.",
              "An integration correction removed URL syntax from language features; the same original test partitions were re-evaluated. See integration_correction.json.",

@@ -2,6 +2,7 @@ package org.suraksha.kavach
 
 import android.Manifest
 import android.app.NotificationManager
+import android.content.ComponentName
 import android.content.Intent
 import android.os.PowerManager
 import android.content.pm.PackageManager
@@ -9,6 +10,7 @@ import androidx.core.content.ContextCompat
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.service.notification.NotificationListenerService
 import android.view.WindowManager
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -42,6 +44,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.suraksha.kavach.ui.*
+import org.suraksha.kavach.notifications.KavachNotificationListener
 
 enum class Page { HOME, ACTIVITY, SETTINGS, CHECK, SETUP, DEBUG, GUARDIAN, FILES, CODE, CALL }
 data class PermissionStatus(val notifications: Boolean, val listener: Boolean, val connected: Boolean, val fullScreen: Boolean,
@@ -72,8 +75,8 @@ class MainActivity : LocalizedActivity() {
                     lifecycle.addObserver(observer)
                     onDispose { lifecycle.removeObserver(observer) }
                 }
-                val allowed = remember(revision, connected, state.overlayEnabled) {
-                    PermissionStatus(NotificationManagerCompat.from(this).areNotificationsEnabled(),
+                val allowed = remember(revision, connected, state.overlayEnabled, state.language) {
+                    PermissionStatus(NotificationManagerCompat.from(this).areNotificationsEnabled() && graph.alerts.channelsReady(state.language),
                         packageName in NotificationManagerCompat.getEnabledListenerPackages(this), connected,
                         Build.VERSION.SDK_INT < 34 || getSystemService(NotificationManager::class.java).canUseFullScreenIntent(),
                         state.overlayEnabled && Settings.canDrawOverlays(this),
@@ -82,11 +85,21 @@ class MainActivity : LocalizedActivity() {
                 }
                 val permission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { revision++ }
                 val smsPermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { revision++; graph.scope.launch(kotlinx.coroutines.Dispatchers.IO) { graph.guardian.refresh() } }
-                val requestSms = { smsPermission.launch(Manifest.permission.SEND_SMS) }
-                val requestAlerts = {
-                    if (Build.VERSION.SDK_INT >= 33 && !allowed.notifications)
-                        permission.launch(Manifest.permission.POST_NOTIFICATIONS)
-                    else openSettings(Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, packageName))
+                val requestSms: () -> Unit = {
+                    val name = Manifest.permission.SEND_SMS
+                    if (graph.settings.wasAsked(name) && !shouldShowRequestPermissionRationale(name))
+                        openSettings(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, "package:$packageName".toUri()))
+                    else { graph.settings.markAsked(name); smsPermission.launch(name) }
+                }
+                val requestAlerts: () -> Unit = {
+                    val destination = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+                    if (Build.VERSION.SDK_INT >= 33) {
+                        val name = Manifest.permission.POST_NOTIFICATIONS
+                        if (ContextCompat.checkSelfPermission(this, name) != PackageManager.PERMISSION_GRANTED &&
+                            (!graph.settings.wasAsked(name) || shouldShowRequestPermissionRationale(name))) {
+                            graph.settings.markAsked(name); permission.launch(name)
+                        } else openSettings(destination)
+                    } else openSettings(destination)
                 }
                 if (page != Page.HOME) BackHandler { page = Page.HOME }
                 Scaffold(containerColor = Cream, bottomBar = {
@@ -137,7 +150,7 @@ class MainActivity : LocalizedActivity() {
                                         openSettings(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
                                     },
                                     onGuardian = { graph.settings.finishSetup(); page = Page.GUARDIAN },
-                                    onVoice = graph::speakWarning,
+                                    onVoice = graph::previewWarning,
                                     onDone = { graph.settings.finishSetup(); page = Page.HOME })
                                 else -> Unit
                             }
@@ -154,6 +167,13 @@ class MainActivity : LocalizedActivity() {
             openSettings(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, "package:$packageName".toUri()))
     }
     private fun routedPage(intent: Intent): Page? = runCatching { Page.valueOf(intent.getStringExtra("page").orEmpty()) }.getOrNull()
+    override fun onResume() {
+        super.onResume()
+        val graph = application as KavachApplication
+        // A user reopening the app after a force-stop can have access but no live binding.
+        if (!graph.listenerConnected.value && packageName in NotificationManagerCompat.getEnabledListenerPackages(this))
+            runCatching { NotificationListenerService.requestRebind(ComponentName(this, KavachNotificationListener::class.java)) }
+    }
     override fun onNewIntent(intent: Intent) { super.onNewIntent(intent); setIntent(intent); requestedPage = routedPage(intent) }
     private fun openSettings(intent: Intent) {
         runCatching { startActivity(intent) }.onFailure { runCatching { startActivity(Intent(Settings.ACTION_SETTINGS)) } }

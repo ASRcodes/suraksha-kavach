@@ -1,0 +1,22 @@
+{
+  "api": 36,
+  "host": "Windows development machine",
+  "avd": "Suraksha_API36",
+  "physical_device": false,
+  "airplane_mode": true,
+  "active_default_network": "none",
+  "discovered": 14,
+  "passed": 8,
+  "failed": 5,
+  "assumptions": 1,
+  "overall_passed": false,
+  "failed_checks": [
+    {"test": "PhaseFiveDeviceTest.hindiAndPunjabiWarningsKeepBothActionsVisible", "failure": "No red screenshot captured"},
+    {"test": "PhaseFourDeviceTest.familyCodeCanBeSetAndCheckedWithoutRevealingIt", "failure": "Timed out waiting for the code-saved UI"},
+    {"test": "PhaseThreeDeviceTest.authorizedOverlayShowsTheWarningAndDismisses", "failure": "No red screenshot captured"},
+    {"test": "PhaseTwoDeviceTest.realModelsStaySilentForTrustedLinksAndEncryptOnlyMetadata", "failure": "Screenshot was null after functional assertions"},
+    {"test": "PhaseTwoDeviceTest.heldOutHinglishSampleOpensRealRedWarning", "failure": "Screenshot was null after functional assertions"}
+  ],
+  "host_observation": "Severe memory pressure and host tool restarts occurred. The host test command timed out, but Android subsequently completed the run. The failures are not dismissed as host-only failures; their cause is unproven.",
+  "follow_up": "Repeat on the dedicated Android 16 Linux/KVM CI emulator. Physical-phone testing remains pending."
+}

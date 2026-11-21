@@ -22,7 +22,7 @@
   <string name="full_screen_detail">ਲੌਕ ਸਕ੍ਰੀਨ ਉੱਤੇ ਵੱਡੀ ਚੇਤਾਵਨੀ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ। Android ਇਸ ਦੀ ਥਾਂ ਸੂਚਨਾ ਵੀ ਦਿਖਾ ਸਕਦਾ ਹੈ।</string>
   <string name="open_settings">ਸੈਟਿੰਗਾਂ ਖੋਲ੍ਹੋ</string>
   <string name="simulate_message">ਸੁਨੇਹੇ ਦੀ ਜਾਂਚ ਕਰੋ</string>
-  <string name="simulation_detail">ਟੈਸਟ ਸੁਨੇਹਾ ਪਾਓ। ਸੁਨੇਹਾ ਭੇਜੇ ਬਿਨਾਂ, ਸੂਚਨਾਵਾਂ ਵਾਲੀ ਹੀ ਜਾਂਚ ਹੋਵੇਗੀ।</string>
+  <string name="simulation_detail">ਸੂਚਨਾਵਾਂ ਵਾਲੀ ਹੀ ਜਾਂਚ ਅਜ਼ਮਾਓ। ਲਿੰਕ ਨਹੀਂ ਖੁੱਲ੍ਹਣਗੇ। ਅਸਲੀ ਖ਼ਤਰਨਾਕ ਨਤੀਜੇ ਉੱਤੇ ਤੁਹਾਡੀ SMS ਸੈਟਿੰਗ ਅਨੁਸਾਰ ਪਰਿਵਾਰ ਨੂੰ ਸੂਚਨਾ ਜਾ ਸਕਦੀ ਹੈ। TEST ਚੇਤਾਵਨੀ SMS ਨਹੀਂ ਭੇਜਦੀ।</string>
   <string name="message_label">ਜਾਂਚ ਲਈ ਸੁਨੇਹਾ</string>
   <string name="check_message">ਸੁਨੇਹਾ ਜਾਂਚੋ</string>
   <string name="back_home">ਹੋਮ ਉੱਤੇ ਵਾਪਸ</string>
@@ -62,7 +62,7 @@
   <string name="level_safe">ਖ਼ਤਰੇ ਦਾ ਸੰਕੇਤ ਨਹੀਂ ਮਿਲਿਆ</string>
   <string name="level_suspicious">ਕਿਸੇ ਭਰੋਸੇਯੋਗ ਵਿਅਕਤੀ ਨੂੰ ਪੁੱਛੋ</string>
   <string name="level_dangerous">ਖ਼ਤਰਨਾਕ • ਸਾਵਧਾਨ ਰਹੋ</string>
-  <string name="manual_check_detail">ਸੁਨੇਹਾ ਪੇਸਟ ਕਰੋ ਜਾਂ ਵੈੱਬਸਾਈਟ ਦਾ ਪਤਾ ਲਿਖੋ। ਕੁਝ ਖੋਲ੍ਹਿਆ ਜਾਂ ਭੇਜਿਆ ਨਹੀਂ ਜਾਵੇਗਾ।</string>
+  <string name="manual_check_detail">ਸੁਨੇਹਾ ਜਾਂ ਵੈੱਬਸਾਈਟ ਦਾ ਪਤਾ ਪਾਓ। ਲਿੰਕ ਨਹੀਂ ਖੁੱਲ੍ਹਣਗੇ। ਪਰਿਵਾਰ ਲਈ SMS ਚਾਲੂ ਹੈ ਤਾਂ ਖ਼ਤਰਨਾਕ ਨਤੀਜੇ ਉੱਤੇ ਸੂਚਨਾ ਜਾ ਸਕਦੀ ਹੈ।</string>
   <string name="safe_note">ਕੋਈ ਜਾਣਿਆ ਖ਼ਤਰੇ ਦਾ ਸੰਕੇਤ ਨਹੀਂ ਮਿਲਿਆ। ਪੈਸੇ, ਪਾਸਵਰਡ ਅਤੇ OTP ਬਾਰੇ ਸਾਵਧਾਨ ਰਹੋ।</string>
   <string name="held_out_examples">ਟੈਸਟ ਦੇ ਉਦਾਹਰਨ ਅਜ਼ਮਾਓ</string>
   <string name="held_out_detail">ਇਹ ਜਨਤਕ ਉਦਾਹਰਨ ਸਿਖਲਾਈ ਤੋਂ ਵੱਖ ਰੱਖੇ ਗਏ ਸਨ। ਅਸਲੀ ਸਕੈਨਰ ਇਨ੍ਹਾਂ ਦੀ ਜਾਂਚ ਕਰਦਾ ਹੈ। ਲਿੰਕ ਕਦੇ ਨਹੀਂ ਖੋਲ੍ਹੇ ਜਾਂਦੇ।</string>
@@ -88,7 +88,7 @@
   <string name="clear_all">ਮੇਰਾ ਸਾਰਾ ਡਾਟਾ ਮਿਟਾਓ</string>
   <string name="clear_failed">ਸਟੋਰੇਜ ਮਿਟਾਉਣ ਲਈ Android ਦੀਆਂ ਐਪ ਸੈਟਿੰਗਾਂ ਖੋਲ੍ਹੋ।</string>
   <string name="clear_confirm_title">ਦੁਬਾਰਾ ਸ਼ੁਰੂ ਕਰਨਾ ਹੈ?</string>
-  <string name="clear_confirm_detail">ਇਸ ਨਾਲ ਹਾਲੀਆ ਜਾਂਚ, ਪਰਿਵਾਰ ਦੀਆਂ ਸੈਟਿੰਗਾਂ ਅਤੇ ਪਸੰਦਾਂ ਮਿਟ ਜਾਣਗੀਆਂ। ਕਵਚ ਬੰਦ ਹੋਵੇਗਾ ਅਤੇ ਦੁਬਾਰਾ ਸੈੱਟਅੱਪ ਕਰਨਾ ਪਵੇਗਾ।</string>
+  <string name="clear_confirm_detail">ਸਰਗਰਮੀ, ਸੈਟਿੰਗਾਂ, ਪਰਿਵਾਰਕ ਨੰਬਰ, ਗੁਪਤ ਸ਼ਬਦ ਅਤੇ ਫ਼ੋਲਡਰ ਦੀ ਇਜਾਜ਼ਤ ਮਿਟ ਜਾਣਗੇ। ਐਪ ਬੰਦ ਹੋ ਕੇ ਅਗਲੀ ਵਾਰ ਨਵੇਂ ਸਿਰੇ ਤੋਂ ਸ਼ੁਰੂ ਹੋਵੇਗਾ।</string>
   <string name="keep_data">ਮੇਰਾ ਡਾਟਾ ਰੱਖੋ</string>
   <string name="alert_message_title">ਰੁਕੋ। ਇਹ ਸੁਨੇਹਾ\nਧੋਖਾ ਹੋ ਸਕਦਾ ਹੈ</string>
   <string name="family_title">ਤੁਹਾਡਾ ਆਪਣਾ ਕੋਈ</string>
@@ -129,7 +129,7 @@
   <string name="setup_later">ਸੈੱਟਅੱਪ ਬਾਅਦ ਵਿੱਚ ਪੂਰਾ ਕਰਾਂਗਾ</string>
   <string name="spoken_warning">ਸਾਵਧਾਨ। ਧੋਖਾ ਹੋ ਸਕਦਾ ਹੈ। ਓ ਟੀ ਪੀ, ਪਿੰਨ ਜਾਂ ਪੈਸੇ ਨਾ ਦਿਓ। ਆਪਣੇ ਪਰਿਵਾਰ ਨਾਲ ਗੱਲ ਕਰੋ।</string>
   <string name="check_file">ਫ਼ਾਈਲ ਜਾਂ APK ਜਾਂਚੋ</string>
-  <string name="file_intro">ਇਸ ਫ਼ੋਨ ਉੱਤੇ ਰੱਖੀ 100 MB ਤੱਕ ਦੀ ਫ਼ਾਈਲ ਚੁਣੋ। ਕਵਚ ਉਸ ਦੇ ਦਸਤਖ਼ਤ ਅਤੇ APK ਦੀਆਂ ਇਜਾਜ਼ਤਾਂ ਜਾਂਚਦਾ ਹੈ। ਐਪ ਕਦੇ ਇੰਸਟਾਲ ਜਾਂ ਚਾਲੂ ਨਹੀਂ ਕਰਦਾ।</string>
+  <string name="file_intro">ਇਸ ਫ਼ੋਨ ਉੱਤੇ ਰੱਖੀ 100 MB ਤੱਕ ਦੀ ਫ਼ਾਈਲ ਚੁਣੋ। ਕਵਚ ਜਾਣੇ ਖ਼ਤਰਿਆਂ ਅਤੇ APK ਦੀਆਂ ਸ਼ਕਤੀਸ਼ਾਲੀ ਇਜਾਜ਼ਤਾਂ ਨੂੰ ਜਾਂਚਦਾ ਹੈ। ਐਪ ਕਦੇ ਇੰਸਟਾਲ ਜਾਂ ਚਾਲੂ ਨਹੀਂ ਕਰਦਾ।</string>
   <string name="pick_file">ਫ਼ਾਈਲ ਚੁਣੋ</string>
   <string name="file_busy">ਫ਼ੋਨ ਉੱਤੇ ਜਾਂਚ ਹੋ ਰਹੀ ਹੈ…</string>
   <string name="file_safe">ਕੋਈ ਜਾਣਿਆ ਖ਼ਤਰੇ ਦਾ ਸੰਕੇਤ ਨਹੀਂ ਮਿਲਿਆ</string>
@@ -139,7 +139,7 @@
   <string name="eicar_title">ਨੁਕਸਾਨ ਰਹਿਤ ਟੈਸਟ\nਫ਼ਾਈਲ ਮਿਲੀ</string>
   <string name="file_test_badge">EICAR ਟੈਸਟ</string>
   <string name="watch_folder">ਫ਼ੋਲਡਰ ਦੀ ਜਾਂਚ · ਚੋਣਵੀਂ</string>
-  <string name="watch_detail">Downloads ਦੇ ਅੰਦਰ ਛੋਟਾ ਫ਼ੋਲਡਰ ਚੁਣੋ। Android ਦੀ ਇਜਾਜ਼ਤ ਮਿਲਣ ਉੱਤੇ ਨਵੀਆਂ ਫ਼ਾਈਲਾਂ ਲਗਭਗ ਹਰ 15 ਮਿੰਟ ਵਿੱਚ ਜਾਂਚੀਆਂ ਜਾਂਦੀਆਂ ਹਨ। ਸਿਰਫ਼ ਇਹੀ ਫ਼ੋਲਡਰ ਜਾਂਚਿਆ ਜਾਵੇਗਾ; ਫ਼ਾਈਲ ਦੀ ਬਦਲਾਅ ਦੀ ਤਾਰੀਖ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ। ਪੁਰਾਣੀ ਫ਼ਾਈਲ ਲਈ ਫ਼ਾਈਲ ਚੁਣੋ ਦਬਾਓ।</string>
+  <string name="watch_detail">Downloads ਦੇ ਅੰਦਰ ਛੋਟਾ ਫ਼ੋਲਡਰ ਚੁਣੋ। Android ਦੀ ਇਜਾਜ਼ਤ ਮਿਲਣ ਉੱਤੇ ਨਵੀਆਂ ਫ਼ਾਈਲਾਂ ਲਗਭਗ ਹਰ 15 ਮਿੰਟ ਵਿੱਚ ਜਾਂਚੀਆਂ ਜਾਂਦੀਆਂ ਹਨ। ਕੁਝ ਸਟੋਰੇਜ ਐਪ ਨਵੀਆਂ ਫ਼ਾਈਲਾਂ ਨਹੀਂ ਦੱਸ ਸਕਦੇ। ਤੁਸੀਂ ਕਦੇ ਵੀ ਫ਼ਾਈਲ ਚੁਣੋ ਨਾਲ ਆਪ ਜਾਂਚ ਸਕਦੇ ਹੋ।</string>
   <string name="watch_choose">ਫ਼ੋਲਡਰ ਚੁਣੋ</string>
   <string name="watch_stop">ਇਸ ਫ਼ੋਲਡਰ ਦੀ ਜਾਂਚ ਬੰਦ ਕਰੋ</string>
   <string name="watch_check">ਨਵੀਆਂ ਫ਼ਾਈਲਾਂ ਹੁਣੇ ਜਾਂਚੋ</string>
@@ -147,7 +147,7 @@
   <string name="watch_ready">ਫ਼ੋਲਡਰ ਦੀ ਇਜਾਜ਼ਤ ਹੈ। ਨਵੀਆਂ ਫ਼ਾਈਲਾਂ ਜਾਂਚੀਆਂ ਜਾਣਗੀਆਂ।</string>
   <string name="watch_access">ਫ਼ੋਲਡਰ ਦੀ ਜਾਂਚ ਨਹੀਂ ਹੋ ਸਕੀ। ਫ਼ੋਨ ਉੱਤੇ 1,000 ਤੋਂ ਘੱਟ ਫ਼ਾਈਲਾਂ ਵਾਲਾ ਫ਼ੋਲਡਰ ਚੁਣੋ ਅਤੇ ਪੜ੍ਹਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ।</string>
   <string name="family_code_title">ਪਰਿਵਾਰ ਦਾ ਗੁਪਤ ਸ਼ਬਦ ਰੱਖੋ</string>
-  <string name="code_detail">ਪਰਿਵਾਰ ਨਾਲ ਮਿਲ ਕੇ ਨਿੱਜੀ ਗੁਪਤ ਸ਼ਬਦ ਤੈਅ ਕਰੋ। 4–64 ਅੱਖਰ ਰੱਖੋ। ਸਿਰਫ਼ ਉਸ ਦਾ ਸੁਰੱਖਿਅਤ ਹੈਸ਼ ਰੱਖਿਆ ਜਾਵੇਗਾ; ਸ਼ਬਦ ਮੁੜ ਦਿਖਾਇਆ ਜਾਂ ਵਾਪਸ ਨਹੀਂ ਲਿਆ ਜਾ ਸਕਦਾ।</string>
+  <string name="code_detail">ਪਰਿਵਾਰ ਨਾਲ ਮਿਲ ਕੇ ਨਿੱਜੀ ਗੁਪਤ ਸ਼ਬਦ ਤੈਅ ਕਰੋ। 4–64 ਅੱਖਰ ਰੱਖੋ। ਕਵਚ ਸੰਭਾਲਿਆ ਸ਼ਬਦ ਦਿਖਾ ਨਹੀਂ ਸਕਦਾ। ਭੁੱਲ ਜਾਓ ਤਾਂ ਨਵਾਂ ਸ਼ਬਦ ਤੈਅ ਕਰੋ।</string>
   <string name="code_input">ਪਰਿਵਾਰ ਦਾ ਗੁਪਤ ਸ਼ਬਦ</string>
   <string name="code_confirm">ਗੁਪਤ ਸ਼ਬਦ ਫਿਰ ਲਿਖੋ</string>
   <string name="code_save">ਗੁਪਤ ਸ਼ਬਦ ਸੰਭਾਲੋ</string>

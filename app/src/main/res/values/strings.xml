@@ -22,7 +22,7 @@
   <string name="full_screen_detail">Allow a large warning on the lock screen. Android may show a notification instead.</string>
   <string name="open_settings">Open settings</string>
   <string name="simulate_message">Simulate a message</string>
-  <string name="simulation_detail">Paste a test message. It follows the same scanner as a notification, without sending a message.</string>
+  <string name="simulation_detail">Uses the same scanner as notifications. Links stay closed. Real dangerous results can notify your guardian if SMS is on; TEST alerts never do.</string>
   <string name="message_label">Message to check</string>
   <string name="check_message">Check this message</string>
   <string name="back_home">Back to Home</string>
@@ -62,7 +62,7 @@
   <string name="level_safe">No warning signs found</string>
   <string name="level_suspicious">Check with someone you trust</string>
   <string name="level_dangerous">Dangerous • take care</string>
-  <string name="manual_check_detail">Paste the message or type a website address. Nothing is opened or sent.</string>
+  <string name="manual_check_detail">Paste a message or website address. Links stay closed. A dangerous result can send an alert if guardian SMS is on.</string>
   <string name="safe_note">No known warning signs were found. Stay careful with money, passwords and OTPs.</string>
   <string name="held_out_examples">Try the test examples</string>
   <string name="held_out_detail">These public examples were kept out of training. The real scanner checks them. Links are never opened.</string>
@@ -88,7 +88,7 @@
   <string name="clear_all">Clear all my data</string>
   <string name="clear_failed">Open Android app settings to clear storage.</string>
   <string name="clear_confirm_title">Start fresh?</string>
-  <string name="clear_confirm_detail">This removes activity, family settings and saved preferences. Kavach will close and need setup again.</string>
+  <string name="clear_confirm_detail">This removes activity, settings, your family contact, code word and watched-folder access. The app will close and start fresh.</string>
   <string name="keep_data">Keep my data</string>
   <string name="alert_message_title">Stop. This message\nmay be a scam</string>
   <string name="family_title">Your family contact</string>
@@ -129,7 +129,7 @@
   <string name="setup_later">I will finish setup later</string>
   <string name="spoken_warning">Stop. This could be a scam. Do not share your O T P, PIN, or money. Call someone you trust.</string>
   <string name="check_file">Check a file or APK</string>
-  <string name="file_intro">Choose a file stored on this phone, up to 100 MB. Kavach checks its signature and APK permissions. It never installs or opens the app.</string>
+  <string name="file_intro">Choose a file stored on this phone, up to 100 MB. Kavach looks for known risky files and powerful APK permissions. It never installs or starts the app.</string>
   <string name="pick_file">Choose a file</string>
   <string name="file_busy">Checking on your phone…</string>
   <string name="file_safe">No known warning signs</string>
@@ -139,7 +139,7 @@
   <string name="eicar_title">Harmless test\nfile detected</string>
   <string name="file_test_badge">EICAR TEST</string>
   <string name="watch_folder">Watch a folder · optional</string>
-  <string name="watch_detail">Choose a small subfolder inside Downloads. New files are checked about every 15 minutes when Android allows it. Only this folder is checked; files need a modification date. Existing files can be checked with Choose a file.</string>
+  <string name="watch_detail">Choose a small subfolder inside Downloads. New files are checked about every 15 minutes when Android allows it. Some storage apps cannot report new files. You can always use Choose a file yourself.</string>
   <string name="watch_choose">Choose a folder</string>
   <string name="watch_stop">Stop watching this folder</string>
   <string name="watch_check">Check new files now</string>
@@ -147,7 +147,7 @@
   <string name="watch_ready">Folder access is ready. New files will be checked.</string>
   <string name="watch_access">This folder could not be checked. Choose a local folder with fewer than 1,000 files and allow read access.</string>
   <string name="family_code_title">Set a family code word</string>
-  <string name="code_detail">Agree on a private code word with your family in person. Use 4–64 characters. Only a salted hash is saved; the word cannot be shown or recovered.</string>
+  <string name="code_detail">Agree on a private code word with your family in person. Use 4–64 characters. Kavach cannot show the saved word. If you forget it, agree on a new one.</string>
   <string name="code_input">Family code word</string>
   <string name="code_confirm">Type the code word again</string>
   <string name="code_save">Save my code word</string>

@@ -18,6 +18,8 @@ val Danger = Color(0xFF991B1B)
 fun KavachTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = lightColorScheme(
+            secondary = Forest, onSecondary = Color.White, secondaryContainer = Color(0xFFDCEFE5),
+            onSecondaryContainer = Ink, tertiary = Forest, outline = Color(0xFF778A80),
             primary = Forest, onPrimary = Color.White, primaryContainer = Color(0xFFDCEFE5),
             onPrimaryContainer = Ink, background = Cream, onBackground = Ink,
             surface = Color.White, onSurface = Ink, surfaceVariant = Color(0xFFEDF1E9),

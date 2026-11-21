@@ -16,6 +16,7 @@ android {
         testInstrumentationRunner = "org.suraksha.kavach.KavachTestRunner"
     }
     bundle { language { enableSplit = false } }
+    sourceSets.getByName("androidTest").assets.srcDir("../ml/parity")
     buildFeatures { compose = true; buildConfig = true }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

@@ -34,7 +34,7 @@ class AlertDispatcher(private val context: Context) {
         for (language in listOf("en", "hi", "pa")) {
             val label = when (language) { "hi" -> "Hindi"; "pa" -> "Punjabi"; else -> "English" }
             manager.createNotificationChannel(NotificationChannel(dangerChannel(language),
-                localized.getString(R.string.alert_channel) + " Â· " + label, NotificationManager.IMPORTANCE_HIGH).apply {
+                localized.getString(R.string.alert_channel) + " \u00b7 " + label, NotificationManager.IMPORTANCE_HIGH).apply {
                 description = localized.getString(R.string.alert_channel_description)
                 enableVibration(true)
                 setSound(WarningAudio.uri(context, language), WarningAudio.attributes())
@@ -43,6 +43,10 @@ class AlertDispatcher(private val context: Context) {
         manager.createNotificationChannel(NotificationChannel(CAUTION_CHANNEL, localized.getString(R.string.caution_channel),
             NotificationManager.IMPORTANCE_DEFAULT))
     }
+
+    fun channelsReady(language: String): Boolean =
+        (manager.getNotificationChannel(dangerChannel(language))?.importance ?: 0) >= NotificationManager.IMPORTANCE_HIGH &&
+        (manager.getNotificationChannel(CAUTION_CHANNEL)?.importance ?: 0) >= NotificationManager.IMPORTANCE_DEFAULT
 
     fun post(result: ScanResult, allowFullScreen: Boolean = true) {
         if (result.verdict.level == Level.SAFE) return

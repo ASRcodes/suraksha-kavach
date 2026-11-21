@@ -23,6 +23,8 @@ An integration correction removed URL syntax from language features; the same or
 Desktop portable inference: median 1.01 ms; p95 1.87 ms.
 This includes both models and feature extraction. Phone measurements are pending.
 
+Android API 26 emulator: all 50 Python/Kotlin parity rows matched at 1e-10. Warm evaluation measured 2.2566 ms median, 5.0186 ms p95 and 5.8942 ms maximum. Model loading took 3782.1988 ms and is excluded from those warm timings. See android_api26_latency.json. This is an emulator benchmark; the actual phone's under-200-ms target is still unverified.
+
 ## Limitations
 
 - Multilingual data is synthetic and limited after deduplication; report per-language support and uncertainty.

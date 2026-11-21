@@ -83,36 +83,44 @@ open class KavachApplication : Application() {
         loadedDatabase = scope.async(Dispatchers.IO) {
             try {
                 HistoryDatabase.open(this@KavachApplication, secrets).also { storageState.value = LoadState.READY }
-            } catch (_: Exception) { storageState.value = LoadState.FAILED; null }
+            } catch (e: CancellationException) { throw e }
+            catch (_: LinkageError) { storageState.value = LoadState.FAILED; null }
+            catch (_: Exception) { storageState.value = LoadState.FAILED; null }
         }
         scope.launch {
             loadedDatabase.await()?.let { db ->
                 try {
                     pruneHistory()
                     db.history().observe().collect { history.value = it }
-                } catch (_: Exception) { storageState.value = LoadState.FAILED }
+                } catch (e: CancellationException) { throw e }
+                catch (_: Exception) { storageState.value = LoadState.FAILED }
             }
         }
         RetentionJob.schedule(this)
     }
 
     fun retryModels() {
+        if (::loadedModels.isInitialized && loadedModels.isActive) return
         modelState.value = LoadState.LOADING
         loadedModels = scope.async(Dispatchers.IO) {
             try {
                 pipeline = MessagePipeline(store.load())
                 modelState.value = LoadState.READY
-            } catch (_: Exception) { modelState.value = LoadState.FAILED }
+            } catch (e: CancellationException) { throw e }
+            catch (_: Exception) { modelState.value = LoadState.FAILED }
         }
     }
 
     suspend fun processMessage(text: String, source: String, simulate: Boolean = false): MessageOutcome {
         if (!simulate && !settings.state.value.protectionEnabled) return MessageOutcome()
         loadedModels.await()
+        if (!simulate && !settings.state.value.protectionEnabled) return MessageOutcome()
         val selected = if (BuildConfig.DEBUG && demoEnabled.value) demo else pipeline
         if (selected == null) return MessageOutcome(available = false)
         val results = try { withContext(Dispatchers.Default) { selected.scan(text, source, deduplicate = !simulate) } }
+            catch (e: CancellationException) { throw e }
             catch (_: Exception) { return MessageOutcome(available = false) }
+        if (!simulate && !settings.state.value.protectionEnabled) return MessageOutcome()
         results.filter { it.verdict.level != Level.SAFE }.maxByOrNull { it.verdict.level.ordinal }?.let {
             handleWarning(it, manual = simulate)
         }
@@ -130,7 +138,11 @@ open class KavachApplication : Application() {
     }
 
     private suspend fun handleWarning(result: ScanResult, manual: Boolean) {
-        scope.launch(Dispatchers.IO) { guardian.onDanger(result) }
+        scope.launch(Dispatchers.IO) {
+            try { guardian.onDanger(result) }
+            catch (e: CancellationException) { throw e }
+            catch (_: Exception) { guardian.markFailure() }
+        }
         if (manual) {
             if (result.verdict.level == Level.SUSPICIOUS) alerts.post(result, false)
             return
@@ -138,7 +150,9 @@ open class KavachApplication : Application() {
         withContext(Dispatchers.Main.immediate) {
             if (result.verdict.level == Level.DANGEROUS) {
                 val activity = foreground?.get()
-                if (activity != null && !activity.isFinishing) activity.startActivity(AlertActivity.intent(activity, result))
+                if (activity != null && !activity.isFinishing) {
+                    runCatching { activity.startActivity(AlertActivity.intent(activity, result)) }.onFailure { alerts.post(result) }
+                }
                 else {
                     val overlayVisible = overlays.show(result)
                     alerts.post(result, allowFullScreen = !overlayVisible)
@@ -150,8 +164,10 @@ open class KavachApplication : Application() {
     fun dismissWarnings() {
         scope.launch(Dispatchers.Main.immediate) { audio.stop(); overlays.dismiss(); alerts.cancel() }
     }
-    fun speakWarning() {
-        if (settings.state.value.voiceEnabled) scope.launch(Dispatchers.Main.immediate) { audio.play(settings.state.value.language) }
+    fun speakWarning() = playWarning(false)
+    fun previewWarning() = playWarning(true)
+    private fun playWarning(explicit: Boolean) {
+        if (explicit || settings.state.value.voiceEnabled) scope.launch(Dispatchers.Main.immediate) { audio.play(settings.state.value.language) }
     }
     fun callGuardian(context: Context) {
         scope.launch(Dispatchers.IO) {
@@ -181,7 +197,8 @@ open class KavachApplication : Application() {
                     db.history().deleteBefore(cutoff())
                     db.history().trim()
                 }
-            } catch (_: Exception) { storageState.value = LoadState.FAILED }
+            } catch (e: CancellationException) { throw e }
+            catch (_: Exception) { storageState.value = LoadState.FAILED }
         }
     }
 
@@ -189,6 +206,7 @@ open class KavachApplication : Application() {
     suspend fun pruneHistory() {
         val db = loadedDatabase.await() ?: return
         try { persistence.withLock { db.history().deleteBefore(cutoff()); db.history().trim() } }
+        catch (e: CancellationException) { throw e }
         catch (_: Exception) { storageState.value = LoadState.FAILED }
     }
     internal suspend fun databaseForTests(): HistoryDatabase? = loadedDatabase.await()
@@ -204,7 +222,8 @@ open class KavachApplication : Application() {
                     pipeline = updated
                     modelState.value = LoadState.READY
                     refreshState.value = RefreshState.DONE
-                } catch (_: Exception) { refreshState.value = RefreshState.FAILED }
+                } catch (e: CancellationException) { refreshState.value = RefreshState.IDLE; throw e }
+                catch (_: Exception) { refreshState.value = RefreshState.FAILED }
             }
         }
     }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -25,6 +26,7 @@ fun GuardianScreen(graph: KavachApplication, smsAllowed: Boolean, requestSms: ()
     var saved by remember { mutableStateOf(false) }
     var busy by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val keyboard = LocalSoftwareKeyboardController.current
     Text(stringResource(R.string.family_title), style = MaterialTheme.typography.headlineLarge)
     Text(stringResource(R.string.family_detail))
     if (state.configured) {
@@ -39,6 +41,7 @@ fun GuardianScreen(graph: KavachApplication, smsAllowed: Boolean, requestSms: ()
     Text(stringResource(R.string.sms_rate_detail), style = MaterialTheme.typography.bodyMedium)
     if (error) Text(stringResource(R.string.guardian_invalid), color = Danger)
     Button(onClick = {
+        keyboard?.hide()
         busy = true
         val input = number
         val wantsSms = consent

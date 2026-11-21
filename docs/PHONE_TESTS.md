@@ -54,3 +54,13 @@ Airplane mode validates local detection/audio/history, not carrier delivery. SMS
 5. Optionally choose a small Downloads subfolder to watch, then add a new test file and tap Check new files now. Revoke folder access and confirm the app asks you to choose a folder again. Background checks may be delayed by Android.
 6. Settings > Set a family code word: save matching entries. Home > suspicious call: verify the large code-word and hang-up/callback instructions, then check correct and incorrect answers. A correct answer must still recommend calling the saved number.
 7. Restart the app and confirm the code still works. Clear all data and confirm the guardian, code, watched-folder access and history are reset.
+
+## Phase 5 phone checks
+1. Set the largest comfortable system font/display size. Check Hindi and Punjabi warnings: both bottom actions must remain accessible, and reasons must scroll without hiding the actions.
+2. Deny notification permission, then deny it permanently. Setup must show the missing permission and take you to system settings when Android no longer shows a permission prompt. Repeat after disabling a warning channel.
+3. Pause protection, receive a fresh test notification, and confirm no automatic warning. Manual message/file checks must remain available. Resume and use a fresh message to avoid the short duplicate window.
+4. Reboot the phone and check notification-listener access/status. Force-stop Kavach, reopen it and confirm that the live listener reconnects. Test SMS and WhatsApp previews while Kavach is in the background, with battery restrictions enabled and then relaxed.
+5. Clear all data from Settings. Relaunch and confirm setup restarts, Enhanced mode and guardian SMS are off, and history/code/contact/folder access are gone.
+6. Measure the real detector on this phone before claiming the under-200-ms target. Existing desktop/emulator timings are recorded separately in ml/reports.
+
+Use the final demo checklist for the presentation; the earlier phase sections above describe their historical checkpoints.

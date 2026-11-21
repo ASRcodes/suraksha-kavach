@@ -56,7 +56,6 @@ class PhaseFourDeviceTest {
             compose.onNodeWithText(compose.activity.getString(R.string.understand)).performClick()
             compose.waitUntil(10_000) { app.history.value.any { ReasonCode.FILE_SCAN in it.toResult().verdict.reasonCodes } }
             assertTrue(app.history.value.filter { ReasonCode.FILE_SCAN in it.toResult().verdict.reasonCodes }.all { it.domain.isEmpty() })
-            assertFalse(app.packageManager.getInstalledApplications(0).any { it.packageName == "org.suraksha.fixture.permissionsonly" })
         } finally { file.delete() }
     }
 

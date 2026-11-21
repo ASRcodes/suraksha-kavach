@@ -60,15 +60,15 @@ class GuardianManager(private val context: Context, private val secrets: SecretS
             })
     }
 
-    fun configure(input: String, enabled: Boolean): Boolean {
-        val normalized = GuardianPolicy.normalizeNumber(input) ?: return false
+    suspend fun configure(input: String, enabled: Boolean): Boolean = mutex.withLock {
+        val normalized = GuardianPolicy.normalizeNumber(input) ?: return@withLock false
         secrets.write("guardian_number", normalized.toByteArray())
         check(prefs.edit().putBoolean("enabled", enabled).putString("status", GuardianStatus.READY.name).commit())
         refresh()
-        return true
+        true
     }
-    fun setEnabled(enabled: Boolean) {
-        if (enabled && number() == null) return
+    suspend fun setEnabled(enabled: Boolean) = mutex.withLock {
+        if (enabled && number() == null) return@withLock
         check(prefs.edit().putBoolean("enabled", enabled).putString("status", GuardianStatus.READY.name).commit())
         refresh()
     }
@@ -92,6 +92,7 @@ class GuardianManager(private val context: Context, private val secrets: SecretS
         try { sender.send(destination, MESSAGE, now) } catch (_: Exception) { setStatus(GuardianStatus.FAILED) }
     }
 
+    fun markFailure() { mutable.value = mutable.value.copy(status = GuardianStatus.FAILED) }
     fun recordResult(attempt: Long, success: Boolean) {
         if (prefs.contains("last_attempt") && prefs.getLong("last_attempt", 0) == attempt)
             setStatus(if (success) GuardianStatus.SENT else GuardianStatus.FAILED)

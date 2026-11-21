@@ -51,7 +51,7 @@ class WarningOverlay(private val app: KavachApplication) {
                         WarningScreen(warning, context.resources.configuration.locales[0].language,
                             onUnderstand = app::dismissWarnings,
                             onGuardian = { app.dismissWarnings(); app.callGuardian(app) },
-                            onReplay = { app.alerts.cancel(); app.speakWarning() })
+                            onReplay = { app.alerts.cancel(); app.previewWarning() })
                     }
                 }
             }
