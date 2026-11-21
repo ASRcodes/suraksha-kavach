@@ -7,7 +7,7 @@ from pathlib import Path
 import re
 import subprocess
 
-from check_native_sms import find_adb
+from check_native_sms import find_adb, wait_for_no_default_network
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE = "org.suraksha.kavach"
@@ -46,10 +46,8 @@ def main() -> int:
         adb("shell", "cmd", "connectivity", "airplane-mode", "enable")
         adb("shell", "svc", "wifi", "disable")
         adb("shell", "svc", "data", "disable")
-    network = [line.strip() for line in adb("shell", "dumpsys", "connectivity").splitlines()
-               if "Active default network:" in line]
     assert adb("shell", "settings", "get", "global", "airplane_mode_on") == "1"
-    assert network == ["Active default network: none"], network
+    network = wait_for_no_default_network(adb)
     adb("shell", "input", "keyevent", "224")
     adb("shell", "input", "keyevent", "82")
 

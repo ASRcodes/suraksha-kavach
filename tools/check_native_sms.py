@@ -8,6 +8,7 @@ No fixture URL is opened. Notification-listener access is restored afterward.
 from __future__ import annotations
 
 import argparse
+from collections.abc import Callable
 import json
 import os
 from pathlib import Path
@@ -34,6 +35,19 @@ def find_adb() -> str:
         if executable.is_file():
             return str(executable)
     raise SystemExit("Set ANDROID_HOME or put adb on PATH.")
+
+
+def wait_for_no_default_network(adb: Callable[..., str], timeout_seconds: float = 30) -> list[str]:
+    """Radio settings return before ConnectivityService finishes disconnecting."""
+    deadline = time.monotonic() + timeout_seconds
+    while True:
+        network = [line.strip() for line in adb("shell", "dumpsys", "connectivity").splitlines()
+                   if "Active default network:" in line]
+        if network == ["Active default network: none"]:
+            return network
+        if time.monotonic() >= deadline:
+            raise TimeoutError(f"The emulator still has a default IP network: {network}")
+        time.sleep(0.25)
 
 
 def main() -> int:
@@ -132,9 +146,7 @@ def main() -> int:
             adb("emu", "gsm", "voice", "home")
             time.sleep(2)
         airplane_during_test = adb("shell", "settings", "get", "global", "airplane_mode_on")
-        network = [line.strip() for line in adb("shell", "dumpsys", "connectivity").splitlines()
-                   if "Active default network:" in line]
-        assert network == ["Active default network: none"], network
+        network = wait_for_no_default_network(adb)
         while time.monotonic() < deadline:
             try:
                 line = lines.get(timeout=1)
