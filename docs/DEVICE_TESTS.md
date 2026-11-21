@@ -28,7 +28,7 @@ The portable helper combines installation, offline-state verification, the suite
 python tools/check_device.py emulator-5582 --large-font
 ~~~
 
-On API 26, enable airplane mode and disable Wi-Fi before invoking it. On current Android versions it configures airplane mode itself. GitHub CI repeats the checks on a dedicated Android 16 Linux emulator with KVM and then runs the actual incoming-SMS check below.
+On API 26, enable airplane mode and disable Wi-Fi before invoking it. On current Android versions it configures airplane mode itself. GitHub CI repeats the checks on dedicated Android 14 and Android 16 Linux emulators with KVM and then runs the actual incoming-SMS check below.
 
 ## Actual notification-listener path
 
